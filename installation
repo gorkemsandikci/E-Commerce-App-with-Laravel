@@ -1,0 +1,7 @@
+- composer create-project laravel/laravel e-ticaret
+- npm install
+- composer update
+- /etc/hosts içerisine virtual host tanımlandı
+- nginx-conf oluşturuldu
+- veritabanı oluşturuldu
+- php artisan key:generate çalıştırıldı
