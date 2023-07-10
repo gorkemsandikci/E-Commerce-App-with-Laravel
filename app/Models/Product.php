@@ -22,11 +22,10 @@ class Product extends Model
         'qty',
     ];
 
-    /**
-     * Return the sluggable configuration array for this model.
-     *
-     * @return array
-     */
+    public function category()
+    {
+       return $this->hasOne(Category::class, 'id','category_id');
+    }
     public function sluggable(): array
     {
         return [

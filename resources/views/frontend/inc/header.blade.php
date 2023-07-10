@@ -49,11 +49,13 @@
                             @foreach ($categories as $category)
                                 @if($category->cat_ust == null)
                                     <li class="has-children">
-                                        <a href="#">{{ $category->name }}</a>
+                                        <a href="{{ route($category->slug.'urunler') }}">{{ $category->name }}</a>
                                         <ul class="dropdown">
                                             @foreach($categories as $subCategory)
                                                 @if($subCategory->cat_ust == $category->id)
-                                                    <li><a href="#">{{ $subCategory->name }}</a></li>
+                                                    <li>
+                                                        <a href="{{ route($category->slug.'urunler',$subCategory->slug) }}">{{ $subCategory->name }}</a>
+                                                    </li>
                                                 @endif
                                             @endforeach
                                         </ul>
@@ -62,20 +64,20 @@
                             @endforeach
                         @endif
 
-{{--                        <li><a href="#">Menu One</a></li>--}}
-{{--                        <li><a href="#">Menu Two</a></li>--}}
-{{--                        <li><a href="#">Menu Three</a></li>--}}
-{{--                        <li class="has-children">--}}
-{{--                            <a href="#">Sub Menu</a>--}}
-{{--                            <ul class="dropdown">--}}
-{{--                                <li><a href="#">Menu One</a></li>--}}
-{{--                                <li><a href="#">Menu Two</a></li>--}}
-{{--                                <li><a href="#">Menu Three</a></li>--}}
-{{--                            </ul>--}}
-{{--                        </li>--}}
+                        {{--                        <li><a href="#">Menu One</a></li>--}}
+                        {{--                        <li><a href="#">Menu Two</a></li>--}}
+                        {{--                        <li><a href="#">Menu Three</a></li>--}}
+                        {{--                        <li class="has-children">--}}
+                        {{--                            <a href="#">Sub Menu</a>--}}
+                        {{--                            <ul class="dropdown">--}}
+                        {{--                                <li><a href="#">Menu One</a></li>--}}
+                        {{--                                <li><a href="#">Menu Two</a></li>--}}
+                        {{--                                <li><a href="#">Menu Three</a></li>--}}
+                        {{--                            </ul>--}}
+                        {{--                        </li>--}}
                     </ul>
                 </li>
-                <li> </li>
+                <li></li>
                 <li><a href="{{ route('hakkimizda') }}">HAKKIMIZDA</a></li>
                 <li><a href="{{ route('urunler') }}">ÜRÜNLER</a></li>
                 <li><a href="{{ route('iletisim') }}">İLETİŞİM</a></li>

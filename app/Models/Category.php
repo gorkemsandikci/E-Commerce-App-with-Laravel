@@ -17,11 +17,10 @@ class Category extends Model
         'cat_ust'
     ];
 
-    /**
-     * Return the sluggable configuration array for this model.
-     *
-     * @return array
-     */
+    public function items()
+    {
+        return $this->hasMany(Product::class, 'category_id', 'id');
+    }
     public function sluggable(): array
     {
         return [
