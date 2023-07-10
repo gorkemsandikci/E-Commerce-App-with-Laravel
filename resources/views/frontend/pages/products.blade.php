@@ -71,7 +71,7 @@
 
                     </div>
                     <div class="row" data-aos="fade-up">
-                        {{ $products->links('pagination::custom')}}
+                        {{ $products->withQueryString()->links('pagination::custom')}}
 {{--                        <div class="col-md-12 text-center">--}}
 {{--                            <div class="site-block-27">--}}
 {{--                                <ul>--}}
