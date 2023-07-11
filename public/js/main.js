@@ -146,6 +146,7 @@ jQuery(document).ready(function ($) {
     };
     sitePlusMinus();
 
+
     var siteSliderRange = function () {
         $("#slider-range").slider({
             range: true,
