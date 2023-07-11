@@ -50,7 +50,7 @@ class PageController extends Controller
         $sizelists = Product::where('status', '1')->groupBy('size')->pluck('size')->toArray();
         $colors = Product::where('status', '1')->groupBy('color')->pluck('color')->toArray();
 
-        $products = $products->orderBy($order_by, $sort)->paginate(10);
+        $products = $products->orderBy($order_by, $sort)->paginate(21);
 
         return view('frontend.pages.products', compact('products', 'min_price', 'max_price', 'sizelists', 'colors'));
     }
@@ -84,10 +84,5 @@ class PageController extends Controller
     public function iletisim()
     {
         return view('frontend.pages.contact');
-    }
-
-    public function sepet()
-    {
-        return view('frontend.pages.cart');
     }
 }

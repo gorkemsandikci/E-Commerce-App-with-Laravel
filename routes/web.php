@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AjaxController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\Frontend\HomePageController;
 use App\Http\Controllers\Frontend\PageController;
 use Illuminate\Support\Facades\Route;
@@ -33,6 +34,8 @@ Route::group(['middleware' => 'sitesetting'], function () {
     Route::get('/iletisim', [PageController::class, 'iletisim'])->name('iletisim');
     Route::post('/iletisim/kaydet', [AjaxController::class, 'iletisimkaydet'])->name('iletisim.kaydet');
 
-    Route::get('/sepet', [PageController::class, 'sepet'])->name('sepet');
+    Route::get('/sepet', [CartController::class, 'index'])->name('sepet');
+
+    Route::post('/sepet/sepetekle', [CartController::class, 'add'])->name('sepetekle');
 
 });
