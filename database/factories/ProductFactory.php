@@ -31,7 +31,7 @@ class ProductFactory extends Factory
             'size' => $size_text,
             'image' => 'images/cloth_2.jpg',
             'color' => $color_list[random_int(0, 5)],
-            'qty' => random_int(1, 50),
+            'qty' => random_int(0, 5),
             'status' => '1',
             'price' => random_int(10, 700),
         ];

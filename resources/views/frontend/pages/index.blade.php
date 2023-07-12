@@ -58,7 +58,7 @@
                 <div class="col-sm-6 col-md-6 col-lg-4 mb-4 mb-lg-0" data-aos="fade" data-aos-delay="">
                     <a class="block-2-item" href="{{ route('kadinurunler') }}">
                         <figure class="image">
-                            <img src="images/women.jpg" alt="" class="img-fluid">
+                            <img src="img/women.jpg" alt="" class="img-fluid">
                         </figure>
                         <div class="text">
                             <span class="text-uppercase">Giyim</span>
@@ -69,7 +69,7 @@
                 <div class="col-sm-6 col-md-6 col-lg-4 mb-5 mb-lg-0" data-aos="fade" data-aos-delay="100">
                     <a class="block-2-item" href="{{ route('cocukurunler') }}">
                         <figure class="image">
-                            <img src="images/children.jpg" alt="" class="img-fluid">
+                            <img src="img/children.jpg" alt="" class="img-fluid">
                         </figure>
                         <div class="text">
                             <span class="text-uppercase">Giyim</span>
@@ -80,7 +80,7 @@
                 <div class="col-sm-6 col-md-6 col-lg-4 mb-5 mb-lg-0" data-aos="fade" data-aos-delay="200">
                     <a class="block-2-item" href="{{ route('erkekurunler') }}">
                         <figure class="image">
-                            <img src="images/men.jpg" alt="" class="img-fluid">
+                            <img src="img/men.jpg" alt="" class="img-fluid">
                         </figure>
                         <div class="text">
                             <span class="text-uppercase">Giyim</span>

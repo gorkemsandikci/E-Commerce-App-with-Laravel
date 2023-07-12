@@ -13,8 +13,16 @@
 
     <div class="site-section">
         <div class="container">
+            @if(session()->get('success'))
+                <div class="row mb-5" data-aos="fade-up">
+                    <div class="col-lg-12">
+                        <div class="alert alert-success">{{ session()->get('success') }}</div>
+
+                    </div>
+                </div>
+            @endif
             <div class="row mb-5">
-                <form class="col-md-12" method="post">
+                <div class="col-md-12">
                     <div class="site-blocks-table">
                         <table class="table table-bordered">
                             <thead>
@@ -30,7 +38,7 @@
                             <tbody>
 
                             @if ($cart_item)
-                                @foreach($cart_item as $item)
+                                @foreach($cart_item as $key => $item)
                                     <tr>
                                         <td class="product-thumbnail">
                                             <img src="{{ asset($item['image']) }}" alt="Image" class="img-fluid">
@@ -46,7 +54,8 @@
                                                         &minus;
                                                     </button>
                                                 </div>
-                                                <input type="text" class="form-control text-center" value="{{ $item['qty'] }}"
+                                                <input type="text" class="form-control text-center"
+                                                       value="{{ $item['qty'] }}"
                                                        placeholder=""
                                                        aria-label="Example text with button addon"
                                                        aria-describedby="button-addon1">
@@ -59,7 +68,13 @@
 
                                         </td>
                                         <td>{{ $item['price'] * $item['qty'] }} ₺</td>
-                                        <td><a href="#" class="btn btn-primary btn-sm">X</a></td>
+                                        <td>
+                                            <form action="{{ route('sepet.cikar') }}" method="POST">
+                                                @csrf
+                                                <input type="hidden" name="product_id" value="{{ $key }}">
+                                                <button type="submit" class="btn btn-primary btn-sm">X</button>
+                                            </form>
+                                        </td>
                                     </tr>
                                 @endforeach
                             @endif
@@ -67,19 +82,11 @@
                             </tbody>
                         </table>
                     </div>
-                </form>
+                </div>
             </div>
 
             <div class="row">
                 <div class="col-md-6">
-                    <div class="row mb-5">
-                        <div class="col-md-6 mb-3 mb-md-0">
-                            <button class="btn btn-primary btn-sm btn-block">Sepeti Güncelle</button>
-                        </div>
-                        <div class="col-md-6">
-                            <button class="btn btn-outline-primary btn-sm btn-block">Ödemeye Geç</button>
-                        </div>
-                    </div>
                     <div class="row">
                         <div class="col-md-12">
                             <label class="text-black h4" for="coupon">İndirim Kuponu</label>
@@ -113,7 +120,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <button class="btn btn-primary btn-lg py-3 btn-block"
-                                            onclick="window.location='checkout.html'">Proceed To Checkout
+                                            onclick="window.location='checkout.html'">Ödemeye Geç
                                     </button>
                                 </div>
                             </div>

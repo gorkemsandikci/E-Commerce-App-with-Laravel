@@ -14,7 +14,7 @@ class SliderSeeder extends Seeder
     public function run(): void
     {
         Slider::create([
-            'image' => 'https://fakeimg.pl/250x100/',
+            'image' => '/images/hero_1.jpg',
             'name' => 'Slider1',
             'content' => 'E-Ticaret Sitemize Hoşgeldiniz',
             'link' => 'urunler',

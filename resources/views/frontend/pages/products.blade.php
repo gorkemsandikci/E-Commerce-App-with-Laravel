@@ -13,7 +13,6 @@
 
     <div class="site-section">
         <div class="container">
-
             <div class="row mb-5">
                 <div class="col-md-9 order-2">
 
@@ -41,6 +40,13 @@
                             </div>
                         </div>
                     </div>
+                    @if(session()->get('success'))
+                        <div class="row mb-5" data-aos="fade-up">
+                            <div class="col-lg-12">
+                                <div class="alert alert-success">{{ session()->get('success') }}</div>
+                            </div>
+                        </div>
+                    @endif
                     <div class="row mb-5">
 
                         @if (!empty($products) && $products->count() > 0)
@@ -54,12 +60,27 @@
                                         </figure>
                                         <div class="block-4-text p-4">
                                             <h3>
-                                                <a href="{{ route('urundetay', $product->slug) }}">{{ $product->name }}</a>
+                                                <a href="{{ route('urundetay', $product->slug) }}">{{ $product->name }}
+                                                    {{$product->qty}}</a>
                                             </h3>
                                             <p class="mb-0">{{ $product->short_text }}</p>
                                             <p class="text-primary font-weight-bold">
                                                 ₺{{ number_format($product->price, 2) }}</p>
-                                            <p><a href="#" class="buy-now btn btn-sm btn-primary">Sepete Ekle</a></p>
+                                            <form action="{{ route('sepet.ekle' )}}" method="POST">
+                                                @csrf
+                                                <input type="hidden" name="productId" value="{{$product->id}}">
+                                                <input type="hidden" name="qty" value="1">
+                                                <input type="hidden" name="size" value="{{$product->size}}">
+                                                @if($product->qty = 0 || $product->qty == null)
+                                                    <button type="submit" href="{{ route('sepet.ekle' )}}"
+                                                            class="buy-now btn btn-sm" disabled>Tükendİ
+                                                    </button>
+                                                @else
+                                                    <button type="submit" href="{{ route('sepet.ekle' )}}"
+                                                            class="buy-now btn btn-sm btn-primary">Sepete Ekle
+                                                    </button>
+                                                @endif
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
@@ -89,9 +110,10 @@
                     <div class="border p-4 rounded mb-4">
                         <h3 class="mb-3 h6 text-uppercase text-black d-block">Kategoriler</h3>
                         <ul class="list-unstyled mb-0">
+                            {{--                       route($category->slug.'urunler',$subCategory->slug) --}}
                             @if(!empty($categories) && count($categories) > 0 )
                                 @foreach($categories->where('cat_ust',null) as $category)
-                                    <li class="mb-1"><a href="{{ $category->slug . route('urunler') }}"
+                                    <li class="mb-1"><a href="{{ route($category->slug.'urunler')  }}"
                                                         class="d-flex"><span>{{ $category->name }}</span> <span
                                                 class="text-black ml-auto">( {{ $category->items_count }} )</span></a>
                                     </li>
@@ -102,7 +124,7 @@
 
                     <div class="border p-4 rounded mb-4">
                         <div class="mb-4">
-                            <h3 class="mb-3 h6 text-uppercase text-black d-block">Fiyata Göre Sırala</h3>
+                            <h3 class="mb-3 h6 text-uppercase text-black d-block">Fİyata Göre Fİltrele</h3>
                             <div id="slider-range" class="border-primary"></div>
                             <input type="text" name="text" id="amount" class="form-control border-0 pl-0 bg-white"
                                    disabled=""/>

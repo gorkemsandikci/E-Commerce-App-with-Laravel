@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ContentFormRequest;
 use App\Models\Contact;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class AjaxController extends Controller
@@ -25,5 +26,11 @@ class AjaxController extends Controller
             'message' => 'Başarıyla Gönderildi'
         ]);
 
+    }
+
+    public function logout()
+    {
+        Auth::logout();
+        return redirect()->route('anasayfa');
     }
 }

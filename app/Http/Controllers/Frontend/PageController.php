@@ -22,7 +22,7 @@ class PageController extends Controller
 
         $products = Product::where('status', '1')
             ->select([
-                'id', 'name', 'slug', 'size', 'color', 'image', 'price', 'category_id'
+                'id', 'name', 'slug', 'size', 'color', 'image', 'price', 'category_id', 'qty'
             ])
             ->where(function ($query) use ($size, $color, $start_price, $end_price) {
                 if (!empty($size)) {
