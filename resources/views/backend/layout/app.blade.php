@@ -256,6 +256,12 @@
 <script src="{{ asset('backend') }}/js/dashboard.js"></script>
 <script src="{{ asset('backend') }}/js/Chart.roundedBarCharts.js"></script>
 <!-- End custom js for this page-->
+
+<!-- Custom js for this page-->
+<script src="{{ asset('backend') }}/js/file-upload.js"></script>
+{{--<script src="{{ asset('backend') }}/js/typeahead.js"></script>--}}
+{{--<script src="{{ asset('backend') }}/js/select2.js"></script>--}}
+<!-- End custom js for this page-->
 </body>
 
 </html>

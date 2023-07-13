@@ -8,6 +8,7 @@ use Cviebrock\EloquentSluggable\Sluggable;
 class Category extends Model
 {
     use Sluggable;
+
     protected $fillable = [
         'name',
         'slug',
@@ -27,6 +28,18 @@ class Category extends Model
         return $this->hasMany(Category::class, 'cat_ust', 'id');
 
     }
+
+    public function getTotalProductCount()
+    {
+        $total = $this->items()->count();
+
+        foreach ($this->subcategory as $sub_category) {
+            $total += $sub_category->items()->count();
+        }
+
+        return $total;
+    }
+
     public function sluggable(): array
     {
         return [

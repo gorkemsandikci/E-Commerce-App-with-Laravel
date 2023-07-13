@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\SliderRequest;
 use App\Models\Slider;
-use Illuminate\Http\Request;
+use ImageResize;
+use Illuminate\Support\Str;
 
 class SliderController extends Controller
 {
@@ -28,9 +30,34 @@ class SliderController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(SliderRequest $request)
     {
-        //
+        if($request->hasFile('image')) {
+            $original_filename = $request->file('image')->getClientOriginalName();
+            $original_filename_arr = explode('.', $original_filename);
+            $file_ext = end($original_filename_arr);
+            $destination_path = 'img/slider';
+            $image_name = Str::slug($request->name) . '-' . date('d-m-Y');
+            $image = $request->file('image');
+
+            if($file_ext == 'pdf' || $file_ext == 'svg' || $file_ext == 'webp') {
+                $image->move(public_path($destination_path), $image_name . '.' . $file_ext);
+            } else {
+                $image = ImageResize::make($image);
+                $image->encode('webp', 75)->save($destination_path . '/' . $image_name.'.webp');
+            }
+        }
+
+        Slider::create([
+            'name' => $request->name,
+            'image' => $image_name ?? null,
+            'link' => $request->link,
+            'content' => $request->description,
+            'status' => $request->status,
+        ]);
+
+        return back()->withSuccess('Slider oluşturuldu!');
+
     }
 
     /**

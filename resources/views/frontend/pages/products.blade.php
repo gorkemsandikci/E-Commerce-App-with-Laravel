@@ -115,7 +115,7 @@
                                 @foreach($categories->where('cat_ust',null) as $category)
                                     <li class="mb-1"><a href="{{ route($category->slug.'urunler')  }}"
                                                         class="d-flex"><span>{{ $category->name }}</span> <span
-                                                class="text-black ml-auto">( {{ $category->items_count }} )</span></a>
+                                                class="text-black ml-auto">( {{ $category->getTotalProductCount() }} )</span></a>
                                     </li>
                                 @endforeach
                             @endif
