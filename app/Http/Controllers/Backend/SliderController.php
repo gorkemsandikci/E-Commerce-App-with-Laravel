@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SliderRequest;
 use App\Models\Slider;
+use Illuminate\Http\Request;
 use ImageResize;
 use Illuminate\Support\Str;
 
@@ -118,9 +119,9 @@ class SliderController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request)
     {
-        $slider = Slider::where('id', $id)->firstOrFail();
+        $slider = Slider::where('id', $request->id)->firstOrFail();
 
         if (file_exists($slider->image)) {
             if (!empty($slider->image)) {
@@ -129,8 +130,15 @@ class SliderController extends Controller
         }
 
         $slider->delete();
-        return back()->withSuccess('Slider silindi!');
+        return response(['error' => false, 'message' => 'Başarıyla Silindi.']);
     }
 
+    public function statusUpdate(Request $request)
+    {
+        $update = $request->state;
+        $update_check = $update == "false" ? '0' : '1';
 
+        Slider::where('id', $request->id)->update(['status' => $update_check]);
+        return response(['error' => false, 'status' => $update]);
+    }
 }
