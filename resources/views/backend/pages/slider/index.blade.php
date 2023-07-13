@@ -8,8 +8,13 @@
                 <div class="card-body">
                     <h4 class="card-title">Basic Table</h4>
                     <p class="card-description">
-                        <a href="{{ route('panel.slider.create') }}" class="btn btn-primary">Yeni Ekle</a>
+                        <a href="{{ route('panel.slider.create')  }}" class="btn btn-primary">Yeni Ekle</a>
                     </p>
+                    @if (session()->get('success'))
+                        <div class="alert alert-success">
+                            {{ session()->get('success') }}
+                        </div>
+                    @endif
                     <div class="table-responsive">
                         <table class="table">
                             <thead>
@@ -36,12 +41,13 @@
                                                 class="badge badge-{{ $slider->status === '1' ? 'success' : 'danger' }}">{{ $slider->status === '1' ? 'Aktif' : 'Pasif' }}</label>
                                         </td>
                                         <td class="d-flex">
-                                            <a class="badge badge-warning mr-2"
+                                            <a class="btn btn-primary mr-2"
                                                href="{{ route('panel.slider.edit', $slider->id) }}">Düzenle</a>
                                             <form action="{{ route('panel.slider.destroy', $slider->id) }}"
                                                   method="POST">
+                                                @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="badge badge-secondary">Sil</button>
+                                                <button type="submit" class="btn btn-danger">Sil</button>
                                             </form>
                                         </td>
                                     </tr>

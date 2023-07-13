@@ -24,7 +24,7 @@ class SliderController extends Controller
      */
     public function create()
     {
-        return view('backend.pages.slider.create');
+        return view('backend.pages.slider.edit');
     }
 
     /**
@@ -32,7 +32,7 @@ class SliderController extends Controller
      */
     public function store(SliderRequest $request)
     {
-        if($request->hasFile('image')) {
+        if ($request->hasFile('image')) {
             $original_filename = $request->file('image')->getClientOriginalName();
             $original_filename_arr = explode('.', $original_filename);
             $file_ext = end($original_filename_arr);
@@ -40,17 +40,20 @@ class SliderController extends Controller
             $image_name = Str::slug($request->name) . '-' . date('d-m-Y');
             $image = $request->file('image');
 
-            if($file_ext == 'pdf' || $file_ext == 'svg' || $file_ext == 'webp') {
+            if ($file_ext == 'pdf' || $file_ext == 'svg' || $file_ext == 'webp') {
                 $image->move(public_path($destination_path), $image_name . '.' . $file_ext);
             } else {
                 $image = ImageResize::make($image);
-                $image->encode('webp', 75)->save($destination_path . '/' . $image_name.'.webp');
+                $image->encode('webp', 75)->save($destination_path . '/' . $image_name . '.webp');
+                $file_ext = 'webp';
             }
+
+            $image_path = '/' . $destination_path . '/' . $image_name . '.' . $file_ext;
         }
 
         Slider::create([
             'name' => $request->name,
-            'image' => $image_name ?? null,
+            'image' => $image_name != null ? $image_path : null,
             'link' => $request->link,
             'content' => $request->description,
             'status' => $request->status,
@@ -80,9 +83,36 @@ class SliderController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(SliderRequest $request, string $id)
     {
-        //
+
+        if ($request->hasFile('image')) {
+            $original_filename = $request->file('image')->getClientOriginalName();
+            $original_filename_arr = explode('.', $original_filename);
+            $file_ext = end($original_filename_arr);
+            $destination_path = 'img/slider';
+            $image_name = Str::slug($request->name) . '-' . date('d-m-Y');
+            $image = $request->file('image');
+            if ($file_ext == 'pdf' || $file_ext == 'svg' || $file_ext == 'webp') {
+                $image->move(public_path($destination_path), $image_name . '.' . $file_ext);
+            } else {
+                $image = ImageResize::make($image);
+                $image->encode('webp', 75)->save($destination_path . '/' . $image_name . '.webp');
+                $file_ext = 'webp';
+            }
+
+            $image_path = '/' . $destination_path . '/' . $image_name . '.' . $file_ext;
+        }
+
+        Slider::where('id', $id)->update([
+            'name' => $request->name,
+            'image' => $image_name != null ? $image_path : null,
+            'link' => $request->link,
+            'content' => $request->description,
+            'status' => $request->status,
+        ]);
+
+        return back()->withSuccess('Slider güncellendi!');
     }
 
     /**
@@ -90,6 +120,17 @@ class SliderController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $slider = Slider::where('id', $id)->firstOrFail();
+
+        if (file_exists($slider->image)) {
+            if (!empty($slider->image)) {
+                unlink($slider->image);
+            }
+        }
+
+        $slider->delete();
+        return back()->withSuccess('Slider silindi!');
     }
+
+
 }
