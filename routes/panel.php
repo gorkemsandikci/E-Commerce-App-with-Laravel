@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Backend\CategoryController;
 use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\SliderController;
 use Illuminate\Support\Facades\Route;
@@ -24,6 +25,13 @@ Route::group(['middleware' => ['panelsetting', 'auth'], 'prefix' => 'panel', 'as
         Route::post('/status-update', [SliderController::class, 'statusUpdate'])->name('slider.status');
     });
 
-    Route::get('/', [DashboardController::class, 'index'])->name('index');
-
+    Route::group(['prefix' => 'category'], function () {
+        Route::get('', [CategoryController::class, 'index'])->name('category.index');
+        Route::get('/create', [CategoryController::class, 'create'])->name('category.create');
+        Route::get('/{id}/edit', [CategoryController::class, 'edit'])->name('category.edit');
+        Route::post('/store', [CategoryController::class, 'store'])->name('category.store');
+        Route::put('/{id}/update', [CategoryController::class, 'update'])->name('category.update');
+        Route::delete('/destroy', [CategoryController::class, 'destroy'])->name('category.destroy');
+        Route::post('/status-update', [CategoryController::class, 'statusUpdate'])->name('category.status');
+    });
 });

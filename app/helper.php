@@ -20,7 +20,7 @@ if (!function_exists('image_upload')) {
         $original_filename = $image->getClientOriginalName();
         $original_filename_arr = explode('.', $original_filename);
         $file_ext = end($original_filename_arr);
-        $image_name = Str::slug($image_name) . '-' . date('d-m-Y');
+        $image_name = date('d-m-Y') . '-' . Str::slug($image_name);
 
         if ($file_ext == 'pdf' || $file_ext == 'svg' || $file_ext == 'webp') {
             $image->move(public_path($destination_path), $image_name . '.' . $file_ext);

@@ -15,7 +15,8 @@ class Category extends Model
         'content',
         'image',
         'thumbnail',
-        'cat_ust'
+        'cat_ust',
+        'status'
     ];
 
     public function items()
@@ -26,7 +27,11 @@ class Category extends Model
     public function subcategory()
     {
         return $this->hasMany(Category::class, 'cat_ust', 'id');
+    }
 
+    public function category()
+    {
+        return $this->hasOne(Category::class, 'id','cat_ust');
     }
 
     public function getTotalProductCount()
