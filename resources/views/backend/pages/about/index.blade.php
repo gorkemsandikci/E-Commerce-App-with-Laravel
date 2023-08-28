@@ -145,7 +145,6 @@
 @endsection
 
 @section('customjs')
-
     <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/translations/tr.js"></script>
     <script>
@@ -170,5 +169,4 @@
                 console.error(error);
             });
     </script>
-
 @endsection
