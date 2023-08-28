@@ -13,9 +13,9 @@ class PageController extends Controller
     {
         $category = $request->segment(1) ?? null;
 
-        $sizes = $request->size ?? null;
+        $sizes =  !empty($request->size) ? explode(',', $request->size) : null;
 
-        $colors = $request->color ?? null;
+        $colors =  !empty($request->color) ? explode(',', $request->color) : null;
 
         $start_price = $request->min ?? null;
         $end_price = $request->max ?? null;
@@ -53,9 +53,9 @@ class PageController extends Controller
 
         $products = $products->orderBy($order_by, $sort)->paginate(21);
 
-        $max_price = Product::max('price');
+        $maxprice = Product::max('price');
 
-        return view('frontend.pages.products', compact('products', 'max_price', 'sizelists', 'colors'));
+        return view('frontend.pages.products', compact('products', 'maxprice', 'sizelists', 'colors'));
     }
 
     public function indirimdekiurunler()

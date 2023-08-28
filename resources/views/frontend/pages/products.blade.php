@@ -6,7 +6,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12 mb-0"><a href="index.html">Home</a> <span class="mx-2 mb-0">/</span> <strong
-                            class="text-black">Shop</strong></div>
+                        class="text-black">Shop</strong></div>
             </div>
         </div>
     </div>
@@ -55,8 +55,8 @@
                                     <div class="block-4 text-center border">
                                         <figure class="block-4-image">
                                             <a href="{{ route('urundetay', $product->slug) }}"><img
-                                                        src="{{ asset($product->image) }}" alt="Image placeholder"
-                                                        class="img-fluid"></a>
+                                                    src="{{ asset($product->image) }}" alt="Image placeholder"
+                                                    class="img-fluid"></a>
                                         </figure>
                                         <div class="block-4-text p-4">
                                             <h3>
@@ -115,7 +115,7 @@
                                 @foreach($categories->where('cat_ust',null) as $category)
                                     <li class="mb-1"><a href="{{ route($category->slug.'urunler')  }}"
                                                         class="d-flex"><span>{{ $category->name }}</span> <span
-                                                    class="text-black ml-auto">( {{ $category->getTotalProductCount() }} )</span></a>
+                                                class="text-black ml-auto">( {{ $category->getTotalProductCount() }} )</span></a>
                                     </li>
                                 @endforeach
                             @endif
@@ -135,10 +135,10 @@
                             @if (!empty($sizelists))
                                 @foreach ($sizelists as $key => $size)
                                     <label for="size{{ $key }}" class="d-flex">
-                                        <input type="checkbox" id="size{{ $key }}"
-                                               {{ isset(request()->size) && in_array($size, request()->size) ? 'checked' : '' }} class="mr-2 mt-1">
+                                        <input type="checkbox" id="size{{ $key }}" value="{{ $size }}"
+                                               {{ isset(request()->size) && in_array($size, explode(',', request()->size)) ? 'checked' : '' }} class="mr-2 mt-1 sizeList">
                                         <span
-                                                class="text-black">{{ $size }} </span>
+                                            class="text-black">{{ $size }} </span>
                                     </label>
                                 @endforeach
                             @endif
@@ -149,16 +149,17 @@
                             @if (!empty($colors))
                                 @foreach ($colors as $key => $color)
                                     <label for="color{{ $key }}" class="d-flex">
-                                        <input type="checkbox" id="color{{ $key }}"
-                                               {{ isset(request()->color) && in_array($color, request()->color) ? 'checked' : '' }} class="mr-2 mt-1"> <span
-                                                class="text-black">{{ $color }} </span>
+                                        <input type="checkbox" id="color{{ $key }}" value="{{ $color }}"
+                                               {{ isset(request()->color) && in_array($color, explode(',', request()->color)) ? 'checked' : '' }} class="mr-2 mt-1 colorList">
+                                        <span
+                                            class="text-black">{{ $color }} </span>
                                     </label>
                                 @endforeach
                             @endif
                         </div>
 
                         <div class="mb-4">
-                            <button class="btn btn-block btn-primary">Filtrele</button>
+                            <button class="btn btn-block btn-primary filterBtn">Filtrele</button>
                         </div>
 
                     </div>
@@ -201,9 +202,34 @@
 
 @section('customjs')
     <script>
-        var maxprice = "{{ $max_price }}";
+        var maxprice = "{{ $maxprice }}";
 
         var defaultminprice = "{{ request()->min ?? 0 }}";
-        var defaultmaxprice = "{{ request()->max ?? $max_price }}";
+        var defaultmaxprice = "{{ request()->max ?? $maxprice }}";
+
+        var url = new URL(window.location.href);
+
+        $(document).on('click', '.filterBtn', function (e) {
+
+            let colorList = $(".colorList:checked").map((_, chk) => chk.value).get()
+            let sizeList = $(".sizeList:checked").map((_, chk) => chk.value).get()
+
+            if (colorList.length > 0) {
+                url.searchParams.set("color", colorList.join(","))
+            } else {
+                url.searchParams.delete('color');
+            }
+
+            if (sizeList.length > 0) {
+                url.searchParams.set("size", sizeList.join(","))
+            } else {
+                url.searchParams.delete('size');
+            }
+
+            newUrl = url.href;
+            window.history.pushState({}, '', newUrl);
+            location.reload();
+
+        });
     </script>
 @endsection
