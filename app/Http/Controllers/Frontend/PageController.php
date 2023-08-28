@@ -12,10 +12,13 @@ class PageController extends Controller
     public function urunler(Request $request, string $slug = null)
     {
         $category = $request->segment(1) ?? null;
-        $size = $request->size ?? null;
-        $color = $request->color ?? null;
-        $start_price = $request->start_price ?? null;
-        $end_price = $request->end_price ?? null;
+
+        $sizes = $request->size ?? null;
+
+        $colors = $request->color ?? null;
+
+        $start_price = $request->min ?? null;
+        $end_price = $request->max ?? null;
 
         $order_by = $request->order_by ?? 'id';
         $sort = $request->sort ?? 'desc';
@@ -24,12 +27,12 @@ class PageController extends Controller
             ->select([
                 'id', 'name', 'slug', 'size', 'color', 'image', 'price', 'category_id', 'qty'
             ])
-            ->where(function ($query) use ($size, $color, $start_price, $end_price) {
-                if (!empty($size)) {
-                    return $query->where('size', $size);
+            ->where(function ($query) use ($sizes, $colors, $start_price, $end_price) {
+                if (!empty($sizes)) {
+                    return $query->whereIn('size', $sizes);
                 }
-                if (!empty($color)) {
-                    return $query->where('color', $color);
+                if (!empty($colors)) {
+                    return $query->whereIn('color', $colors);
                 }
                 if (!empty($start_price) && !empty($end_price)) {
                     return $query->whereBetween('price', [$start_price, $end_price]);
@@ -44,15 +47,15 @@ class PageController extends Controller
                 return $query;
             });
 
-        $min_price = $products->min('price');
-        $max_price = $products->max('price');
-
         $sizelists = Product::where('status', '1')->groupBy('size')->pluck('size')->toArray();
+
         $colors = Product::where('status', '1')->groupBy('color')->pluck('color')->toArray();
 
         $products = $products->orderBy($order_by, $sort)->paginate(21);
 
-        return view('frontend.pages.products', compact('products', 'min_price', 'max_price', 'sizelists', 'colors'));
+        $max_price = Product::max('price');
+
+        return view('frontend.pages.products', compact('products', 'max_price', 'sizelists', 'colors'));
     }
 
     public function indirimdekiurunler()

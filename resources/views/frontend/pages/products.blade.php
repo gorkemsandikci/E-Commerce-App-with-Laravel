@@ -6,7 +6,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12 mb-0"><a href="index.html">Home</a> <span class="mx-2 mb-0">/</span> <strong
-                        class="text-black">Shop</strong></div>
+                            class="text-black">Shop</strong></div>
             </div>
         </div>
     </div>
@@ -55,8 +55,8 @@
                                     <div class="block-4 text-center border">
                                         <figure class="block-4-image">
                                             <a href="{{ route('urundetay', $product->slug) }}"><img
-                                                    src="{{ asset($product->image) }}" alt="Image placeholder"
-                                                    class="img-fluid"></a>
+                                                        src="{{ asset($product->image) }}" alt="Image placeholder"
+                                                        class="img-fluid"></a>
                                         </figure>
                                         <div class="block-4-text p-4">
                                             <h3>
@@ -115,7 +115,7 @@
                                 @foreach($categories->where('cat_ust',null) as $category)
                                     <li class="mb-1"><a href="{{ route($category->slug.'urunler')  }}"
                                                         class="d-flex"><span>{{ $category->name }}</span> <span
-                                                class="text-black ml-auto">( {{ $category->getTotalProductCount() }} )</span></a>
+                                                    class="text-black ml-auto">( {{ $category->getTotalProductCount() }} )</span></a>
                                     </li>
                                 @endforeach
                             @endif
@@ -133,10 +133,12 @@
                         <div class="mb-4">
                             <h3 class="mb-3 h6 text-uppercase text-black d-block">Bedenler</h3>
                             @if (!empty($sizelists))
-                                @foreach ($sizelists as $sizelist)
-                                    <label for="s_sm" class="d-flex">
-                                        <input type="checkbox" id="s_sm" class="mr-2 mt-1"> <span
-                                            class="text-black">{{ $sizelist }} </span>
+                                @foreach ($sizelists as $key => $size)
+                                    <label for="size{{ $key }}" class="d-flex">
+                                        <input type="checkbox" id="size{{ $key }}"
+                                               {{ isset(request()->size) && in_array($size, request()->size) ? 'checked' : '' }} class="mr-2 mt-1">
+                                        <span
+                                                class="text-black">{{ $size }} </span>
                                     </label>
                                 @endforeach
                             @endif
@@ -145,13 +147,18 @@
                         <div class="mb-4">
                             <h3 class="mb-3 h6 text-uppercase text-black d-block">Renk</h3>
                             @if (!empty($colors))
-                                @foreach ($colors as $color)
-                                    <a href="#" class="d-flex color-item align-items-center">
-                                        <span class="bg-success color d-inline-block rounded-circle mr-2"></span> <span
-                                            class="text-black">{{ $color }}</span>
-                                    </a>
+                                @foreach ($colors as $key => $color)
+                                    <label for="color{{ $key }}" class="d-flex">
+                                        <input type="checkbox" id="color{{ $key }}"
+                                               {{ isset(request()->color) && in_array($color, request()->color) ? 'checked' : '' }} class="mr-2 mt-1"> <span
+                                                class="text-black">{{ $color }} </span>
+                                    </label>
                                 @endforeach
                             @endif
+                        </div>
+
+                        <div class="mb-4">
+                            <button class="btn btn-block btn-primary">Filtrele</button>
                         </div>
 
                     </div>
@@ -194,7 +201,9 @@
 
 @section('customjs')
     <script>
-        var minprice = "{{ $min_price }}";
         var maxprice = "{{ $max_price }}";
+
+        var defaultminprice = "{{ request()->min ?? 0 }}";
+        var defaultmaxprice = "{{ request()->max ?? $max_price }}";
     </script>
 @endsection
