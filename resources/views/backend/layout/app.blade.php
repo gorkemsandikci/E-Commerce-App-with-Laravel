@@ -5,8 +5,6 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <!-- CSRF Token -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Yönetim Paneli</title>
     <!-- plugins:css -->
     <link rel="stylesheet" href="{{ asset('backend') }}/vendors/feather/feather.css">
@@ -21,10 +19,13 @@
     <!-- inject:css -->
     <link rel="stylesheet" href="{{ asset('backend') }}/css/vertical-layout-light/style.css">
     <link href="{{ asset('backend') }}/css/bootstrap-toggle.min.css" rel="stylesheet">
-{{--    <link rel="stylesheet" href="{{ asset('backend') }}/css/bootstrap.min.css"/>--}}
+    {{--    <link rel="stylesheet" href="{{ asset('backend') }}/css/bootstrap.min.css"/>--}}
     <link rel="stylesheet" href="{{ asset('backend') }}/css/alertify.min.css"/>
     <!-- endinject -->
     <link rel="shortcut icon" href="{{ asset('backend') }}/images/favicon.png"/>
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    @yield('customcss')
 </head>
 <body>
 <div class="container-scroller">

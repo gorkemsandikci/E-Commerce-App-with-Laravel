@@ -2,7 +2,7 @@
 <nav class="sidebar sidebar-offcanvas" id="sidebar">
     <ul class="nav">
         <li class="nav-item">
-            <a class="nav-link" href="index.html">
+            <a class="nav-link" href="{{ route('panel.index') }}">
                 <i class="icon-grid menu-icon"></i>
                 <span class="menu-title">Dashboard</span>
             </a>
@@ -20,6 +20,7 @@
                 </ul>
             </div>
         </li>
+
         <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#category-nav-item" aria-expanded="false" aria-controls="category-nav-item">
                 <i class="icon-layout menu-icon"></i>
@@ -32,6 +33,13 @@
                     <li class="nav-item"> <a class="nav-link" href="{{ route('panel.category.create') }}">Oluştur</a></li>
                 </ul>
             </div>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('panel.about.index') }}">
+                <i class="icon-grid menu-icon"></i>
+                <span class="menu-title">Hakkımızda</span>
+            </a>
         </li>
     </ul>
 </nav>

@@ -47,7 +47,6 @@ class SliderController extends Controller
         ]);
 
         return back()->withSuccess('Slider oluşturuldu!');
-
     }
 
     /**

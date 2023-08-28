@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Backend\AboutController;
 use App\Http\Controllers\Backend\CategoryController;
 use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\SliderController;
@@ -34,4 +35,7 @@ Route::group(['middleware' => ['panelsetting', 'auth'], 'prefix' => 'panel', 'as
         Route::delete('/destroy', [CategoryController::class, 'destroy'])->name('category.destroy');
         Route::post('/status-update', [CategoryController::class, 'statusUpdate'])->name('category.status');
     });
+
+    Route::get('/about', [AboutController::class, 'index'])->name('about.index');
+    Route::post('/about/update', [AboutController::class, 'update'])->name('about.update');
 });
