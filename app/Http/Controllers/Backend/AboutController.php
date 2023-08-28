@@ -16,6 +16,8 @@ class AboutController extends Controller
 
     public function update(Request $request, $id = 1)
     {
+        $about = About::where('id', $id)->firstOrFail();
+        $image_url = $about->image;
 
         if ($request->hasFile('image')) {
             $image = $request->file('image');
