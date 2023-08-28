@@ -34,3 +34,14 @@ if (!function_exists('image_upload')) {
         return $image_url;
     }
 }
+
+if(!function_exists('strLimit')) {
+    function strLimit($text, $limit, $url = null) {
+        if ($url == null) {
+            $end = '...';
+        } else {
+            $end = '<a class="ml-2" href="' . $url . '">[...]</a>';
+        }
+        return Str::limit($text, $limit, $end);
+    }
+}

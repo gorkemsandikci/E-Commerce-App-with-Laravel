@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Backend\AboutController;
 use App\Http\Controllers\Backend\CategoryController;
+use App\Http\Controllers\Backend\ContactController;
 use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\SliderController;
 use Illuminate\Support\Facades\Route;
@@ -38,4 +39,14 @@ Route::group(['middleware' => ['panelsetting', 'auth'], 'prefix' => 'panel', 'as
 
     Route::get('/about', [AboutController::class, 'index'])->name('about.index');
     Route::post('/about/update', [AboutController::class, 'update'])->name('about.update');
+
+
+    Route::group(['prefix' => 'contact'], function () {
+        Route::get('/', [ContactController::class, 'index'])->name('contact.index');
+        Route::get('/{id}/edit', [ContactController::class, 'edit'])->name('contact.edit');
+        Route::put('/{id}/update', [ContactController::class, 'update'])->name('contact.update');
+        Route::delete('/destroy', [ContactController::class, 'destroy'])->name('contact.destroy');
+        Route::post('/status-update', [ContactController::class, 'statusUpdate'])->name('contact.status');
+    });
+
 });

@@ -41,5 +41,12 @@
                 <span class="menu-title">Hakkımızda</span>
             </a>
         </li>
+
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('panel.contact.index') }}">
+                <i class="icon-grid menu-icon"></i>
+                <span class="menu-title">İletişim Mesajları</span>
+            </a>
+        </li>
     </ul>
 </nav>
