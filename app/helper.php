@@ -22,6 +22,10 @@ if (!function_exists('image_upload')) {
         $file_ext = end($original_filename_arr);
         $image_name = date('d-m-Y') . '-' . Str::slug($image_name);
 
+        if(!file_exists($destination_path)) {
+            mkdir($destination_path, 0777, true);
+        }
+
         if ($file_ext == 'pdf' || $file_ext == 'svg' || $file_ext == 'webp') {
             $image->move(public_path($destination_path), $image_name . '.' . $file_ext);
         } else {

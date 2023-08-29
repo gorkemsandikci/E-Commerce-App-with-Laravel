@@ -4,6 +4,7 @@ use App\Http\Controllers\Backend\AboutController;
 use App\Http\Controllers\Backend\CategoryController;
 use App\Http\Controllers\Backend\ContactController;
 use App\Http\Controllers\Backend\DashboardController;
+use App\Http\Controllers\Backend\SettingController;
 use App\Http\Controllers\Backend\SliderController;
 use Illuminate\Support\Facades\Route;
 
@@ -49,4 +50,12 @@ Route::group(['middleware' => ['panelsetting', 'auth'], 'prefix' => 'panel', 'as
         Route::post('/status-update', [ContactController::class, 'statusUpdate'])->name('contact.status');
     });
 
+    Route::group(['prefix' => 'setting'], function () {
+        Route::get('', [SettingController::class, 'index'])->name('setting.index');
+        Route::get('/create', [SettingController::class, 'create'])->name('setting.create');
+        Route::post('/store', [SettingController::class, 'store'])->name('setting.store');
+        Route::get('/{id}/edit', [SettingController::class, 'edit'])->name('setting.edit');
+        Route::put('/{id}/update', [SettingController::class, 'update'])->name('setting.update');
+        Route::delete('/destroy', [SettingController::class, 'destroy'])->name('setting.destroy');
+    });
 });

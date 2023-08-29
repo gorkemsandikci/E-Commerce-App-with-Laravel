@@ -48,5 +48,12 @@
                 <span class="menu-title">İletişim Mesajları</span>
             </a>
         </li>
+
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('panel.setting.index') }}">
+                <i class="icon-grid menu-icon"></i>
+                <span class="menu-title">Site Ayarları</span>
+            </a>
+        </li>
     </ul>
 </nav>
