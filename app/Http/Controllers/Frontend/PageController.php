@@ -29,13 +29,14 @@ class PageController extends Controller
             ])
             ->where(function ($query) use ($sizes, $colors, $start_price, $end_price) {
                 if (!empty($sizes)) {
-                    return $query->whereIn('size', $sizes);
+                    $query->whereIn('size', $sizes);
                 }
                 if (!empty($colors)) {
-                    return $query->whereIn('color', $colors);
+                    $query->whereIn('color', $colors);
                 }
                 if (!empty($start_price) && !empty($end_price)) {
-                    return $query->whereBetween('price', [$start_price, $end_price]);
+                    $query->where('price', '>=', $start_price);
+                    $query->where('price', '<=', $end_price);
                 }
                 return $query;
             })

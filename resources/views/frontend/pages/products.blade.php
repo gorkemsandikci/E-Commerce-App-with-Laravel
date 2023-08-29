@@ -24,18 +24,13 @@
 
                                 </div>
                                 <div class="btn-group">
-                                    <button type="button" class="btn btn-secondary btn-sm dropdown-toggle"
-                                            id="dropdownMenuReference" data-toggle="dropdown">Sırala
-                                    </button>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuReference">
-                                        <a class="dropdown-item" href="#" data-sira="a_z_order">A'dan Z'ye Sırala</a>
-                                        <a class="dropdown-item" href="#" data-sira="z_a_order">Z-den A'ya Sırala</a>
-                                        <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="#" data-sira="price_min_order">Artan Fiyata
-                                            Sırala </a>
-                                        <a class="dropdown-item" href="#" data-sira="price_max_order">Azalan Fiyata
-                                            Sırala</a>
-                                    </div>
+                                    <select class="form-control" id="orderList">
+                                        <option class="dropdown-item" value="">Sıralama Seçiniz</option>
+                                        <option class="dropdown-item" value="id-asc">A'dan Z'ye Sırala</option>
+                                        <option class="dropdown-item" value="id-desc">Z-den A'ya Sırala</option>
+                                        <option class="dropdown-item" value="price-asc">Artan Fiyata Sırala</option>
+                                        <option class="dropdown-item" value="price-desc">Azalan Fiyata Sırala</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -124,10 +119,12 @@
 
                     <div class="border p-4 rounded mb-4">
                         <div class="mb-4">
-                            <h3 class="mb-3 h6 text-uppercase text-black d-block">Fİyata Göre Fİltrele</h3>
+                            <h3 class="mb-3 h6 text-uppercase text-black d-block">Fiyata Göre Fİltrele</h3>
                             <div id="slider-range" class="border-primary"></div>
                             <input type="text" name="text" id="amount" class="form-control border-0 pl-0 bg-white"
                                    disabled=""/>
+
+                            <input type="text" name="text" id="priceBetween" class="form-control"/>
                         </div>
 
                         <div class="mb-4">
@@ -210,7 +207,10 @@
         var url = new URL(window.location.href);
 
         $(document).on('click', '.filterBtn', function (e) {
+            filtrele();
+        });
 
+        function filtrele() {
             let colorList = $(".colorList:checked").map((_, chk) => chk.value).get()
             let sizeList = $(".sizeList:checked").map((_, chk) => chk.value).get()
 
@@ -226,10 +226,30 @@
                 url.searchParams.delete('size');
             }
 
+            var price = $('#priceBetween').val().split('-');
+            url.searchParams.set("min", price[0]);
+            url.searchParams.set("max", price[1]);
+
             newUrl = url.href;
             window.history.pushState({}, '', newUrl);
             location.reload();
 
+        }
+
+        $(document).on('change', '#orderList', function (e) {
+            var order = $(this).val();
+
+            if (order != '') {
+                orderby = order.split('-');
+                url.searchParams.set("order_by", orderby[0]);
+                url.searchParams.set("sort", orderby[1]);
+            } else {
+                url.searchParams.delete('order_by');
+                url.searchParams.delete('sort');
+            }
+            filtrele();
+
         });
+
     </script>
 @endsection
