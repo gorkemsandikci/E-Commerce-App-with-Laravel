@@ -21,7 +21,6 @@
                             <div class="float-md-left mb-4"><h2 class="text-black h5">Ürünler</h2></div>
                             <div class="d-flex">
                                 <div class="dropdown mr-1 ml-md-auto">
-
                                 </div>
                                 <div class="btn-group">
                                     <select class="form-control" id="orderList">
@@ -42,48 +41,10 @@
                             </div>
                         </div>
                     @endif
-                    <div class="row mb-5">
-
-                        @if (!empty($products) && $products->count() > 0)
-                            @foreach ($products as $product)
-                                <div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
-                                    <div class="block-4 text-center border">
-                                        <figure class="block-4-image">
-                                            <a href="{{ route('urundetay', $product->slug) }}"><img
-                                                    src="{{ asset($product->image) }}" alt="Image placeholder"
-                                                    class="img-fluid"></a>
-                                        </figure>
-                                        <div class="block-4-text p-4">
-                                            <h3>
-                                                <a href="{{ route('urundetay', $product->slug) }}">{{ $product->name }}
-                                                    {{$product->qty}}</a>
-                                            </h3>
-                                            <p class="mb-0">{{ $product->short_text }}</p>
-                                            <p class="text-primary font-weight-bold">
-                                                ₺{{ number_format($product->price, 2) }}</p>
-                                            <form action="{{ route('sepet.ekle' )}}" method="POST">
-                                                @csrf
-                                                <input type="hidden" name="productId" value="{{$product->id}}">
-                                                <input type="hidden" name="qty" value="1">
-                                                <input type="hidden" name="size" value="{{$product->size}}">
-                                                @if($product->qty = 0 || $product->qty == null)
-                                                    <button type="submit" href="{{ route('sepet.ekle' )}}"
-                                                            class="buy-now btn btn-sm" disabled>Tükendİ
-                                                    </button>
-                                                @else
-                                                    <button type="submit" href="{{ route('sepet.ekle' )}}"
-                                                            class="buy-now btn btn-sm btn-primary">Sepete Ekle
-                                                    </button>
-                                                @endif
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endforeach
-                        @endif
-
+                    <div class="row mb-5 productContent">
+                        @include('frontend.ajax.productList')
                     </div>
-                    <div class="row" data-aos="fade-up">
+                    <div class="row paginateButtons" data-aos="fade-up">
                         {{ $products->withQueryString()->links('pagination::custom')}}
                         {{--                        <div class="col-md-12 text-center">--}}
                         {{--                            <div class="site-block-27">--}}
@@ -124,7 +85,7 @@
                             <input type="text" name="text" id="amount" class="form-control border-0 pl-0 bg-white"
                                    disabled=""/>
 
-                            <input type="text" name="text" id="priceBetween" class="form-control"/>
+                            <input type="text" name="text" id="priceBetween" class="form-control" hidden=""/>
                         </div>
 
                         <div class="mb-4">
@@ -232,7 +193,19 @@
 
             newUrl = url.href;
             window.history.pushState({}, '', newUrl);
-            location.reload();
+            // location.reload();
+
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                },
+                type: "GET",
+                url: newUrl,
+                success: function (response) {
+                    $('.productContent').html(response.data);
+                    $('.paginateButtons').html(response.paginate);
+                }
+            });
 
         }
 

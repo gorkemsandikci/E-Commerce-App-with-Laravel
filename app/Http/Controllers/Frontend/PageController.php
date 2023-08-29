@@ -13,9 +13,9 @@ class PageController extends Controller
     {
         $category = $request->segment(1) ?? null;
 
-        $sizes =  !empty($request->size) ? explode(',', $request->size) : null;
+        $sizes = !empty($request->size) ? explode(',', $request->size) : null;
 
-        $colors =  !empty($request->color) ? explode(',', $request->color) : null;
+        $colors = !empty($request->color) ? explode(',', $request->color) : null;
 
         $start_price = $request->min ?? null;
         $end_price = $request->max ?? null;
@@ -46,13 +46,16 @@ class PageController extends Controller
                     $query->where('slug', $slug);
                 }
                 return $query;
-            });
+            })->orderBy($order_by, $sort)->paginate(21);;
+
+        if ($request->ajax()) {
+            $data = view('frontend.ajax.productList', compact('products'))->render();
+            return response(['data' => $data, 'paginate' => (string) $products->withQueryString()->links('pagination::custom')]);
+        }
 
         $sizelists = Product::where('status', '1')->groupBy('size')->pluck('size')->toArray();
 
         $colors = Product::where('status', '1')->groupBy('color')->pluck('color')->toArray();
-
-        $products = $products->orderBy($order_by, $sort)->paginate(21);
 
         $maxprice = Product::max('price');
 
