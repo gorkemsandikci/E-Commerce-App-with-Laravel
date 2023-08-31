@@ -20,7 +20,7 @@
                 <div class="block-5 mb-5">
                     <h3 class="footer-heading mb-4">İletişim</h3>
                     <ul class="list-unstyled">
-                        <li class="address">{{ $settings['address'] }}</li>
+                        <li class="address">{!! $settings['address'] !!}</li>
                         <li class="phone"><a href="tel://{{ str_replace(' ', '', $settings['phone']) }}">{{ $settings['phone'] }}</a></li>
                         <li class="email">{{ $settings['email'] }}</li>
                     </ul>
@@ -30,8 +30,8 @@
         <div class="row pt-5 mt-5 text-center">
             <div class="col-md-12">
                 <p>
-                    Copyright &copy; {{ date('Y') }} Tüm hakları saklıdır | <a href="https://yeklam.com"
-                                                                               target="_blank" class="text-primary">Yeklam</a>
+                    Copyright &copy; {{ date('Y') }} Tüm hakları saklıdır | <a href="https://gorkemnet.com"
+                                                                               target="_blank" class="text-primary">Gorkemnet</a>
                 </p>
             </div>
 

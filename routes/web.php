@@ -41,7 +41,9 @@ Route::group(['middleware' => 'sitesetting'], function () {
         Route::post('/ekle', [CartController::class, 'add'])->name('sepet.ekle');
         Route::post('/cikar', [CartController::class, 'remove'])->name('sepet.cikar');
         Route::get('/', [CartController::class, 'index'])->name('sepet');
+        Route::post('/couponcheck', [CartController::class, 'couponcheck'])->name('coupon.check');
     });
+
 
     Auth::routes();
 

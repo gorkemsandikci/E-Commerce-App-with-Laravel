@@ -178,6 +178,11 @@
             ckeditor(defaultText);
         @endif
 
+        @if(isset($setting->data) && $setting->set_type == 'textarea')
+            console.log('textarea');
+            createInput('textarea');
+        @endif
+
         function createInput(type) {
             defaultText = "{!! isset($setting->data) ? $setting->data : '' !!}";
 
@@ -200,15 +205,18 @@
                 newInput = $('<textarea>').attr({
                     name: 'data',
                     id: 'editor',
+                    value: defaultText,
                     class: 'editor',
                 });
                 newInput.val(defaultText);
             } else if (type === 'textarea') {
                 newInput = $('<textarea>').attr({
                     name: 'data',
+                    id: 'textarea',
+                    value: defaultText,
                     class: 'form-control',
                 });
-                newInput.val(defaultText);
+                newInput.value(defaultText);
             } else if (type === 'file' || type === 'image') {
                 newInput = $('<input>').attr({
                     type: 'file',

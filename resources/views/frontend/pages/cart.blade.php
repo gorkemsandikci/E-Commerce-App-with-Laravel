@@ -13,14 +13,16 @@
 
     <div class="site-section">
         <div class="container">
-            @if(session()->get('success'))
-                <div class="row mb-5" data-aos="fade-up">
-                    <div class="col-lg-12">
+            <div class="row mb-5" data-aos="fade-up">
+                <div class="col-lg-12">
+                    @if(session()->get('success'))
                         <div class="alert alert-success">{{ session()->get('success') }}</div>
-
-                    </div>
+                    @endif
+                    @if(session()->get('error'))
+                        <div class="alert alert-danger">{{ session()->get('error') }}</div>
+                    @endif
                 </div>
-            @endif
+            </div>
             <div class="row mb-5">
                 <div class="col-md-12">
                     <div class="site-blocks-table">
@@ -87,18 +89,23 @@
 
             <div class="row">
                 <div class="col-md-6">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <label class="text-black h4" for="coupon">İndirim Kuponu</label>
-                            <p>İndirim kupon kodunuzu buraya girebilirsiniz.</p>
+                    <form action="{{ route('coupon.check') }}" method="POST">
+                        @csrf
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label class="text-black h4" for="coupon">İndirim Kuponu</label>
+                                <p>İndirim kupon kodunuzu buraya girebilirsiniz.</p>
+                            </div>
+                            <div class="col-md-8 mb-3 mb-md-0">
+                                <input type="text" class="form-control py-3" id="coupon"
+                                       value="{{ session()->get('coupon_code') ?? '' }}" name="coupon_name"
+                                       placeholder="Kupon Kodu">
+                            </div>
+                            <div class="col-md-4">
+                                <button type="submit" class="btn btn-primary btn-sm">Kuponu Kodunu Onayla</button>
+                            </div>
                         </div>
-                        <div class="col-md-8 mb-3 mb-md-0">
-                            <input type="text" class="form-control py-3" id="coupon" placeholder="Kupon Kodu">
-                        </div>
-                        <div class="col-md-4">
-                            <button class="btn btn-primary btn-sm">Kuponu Kodunu Onayla</button>
-                        </div>
-                    </div>
+                    </form>
                 </div>
                 <div class="col-md-6 pl-5">
                     <div class="row justify-content-end">
@@ -113,7 +120,7 @@
                                     <span class="text-black">Toplam</span>
                                 </div>
                                 <div class="col-md-6 text-right">
-                                    <strong class="text-black">{{ $total_price }}</strong>
+                                    <strong class="text-black">{{ session()->get('total_price') ?? '' }}</strong>
                                 </div>
                             </div>
 
