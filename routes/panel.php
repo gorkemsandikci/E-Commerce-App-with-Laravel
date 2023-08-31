@@ -4,6 +4,7 @@ use App\Http\Controllers\Backend\AboutController;
 use App\Http\Controllers\Backend\CategoryController;
 use App\Http\Controllers\Backend\ContactController;
 use App\Http\Controllers\Backend\DashboardController;
+use App\Http\Controllers\Backend\ProductController;
 use App\Http\Controllers\Backend\SettingController;
 use App\Http\Controllers\Backend\SliderController;
 use Illuminate\Support\Facades\Route;
@@ -36,6 +37,16 @@ Route::group(['middleware' => ['panelsetting', 'auth'], 'prefix' => 'panel', 'as
         Route::put('/{id}/update', [CategoryController::class, 'update'])->name('category.update');
         Route::delete('/destroy', [CategoryController::class, 'destroy'])->name('category.destroy');
         Route::post('/status-update', [CategoryController::class, 'statusUpdate'])->name('category.status');
+    });
+
+    Route::group(['prefix' => 'product'], function () {
+        Route::get('', [ProductController::class, 'index'])->name('product.index');
+        Route::get('/create', [ProductController::class, 'create'])->name('product.create');
+        Route::get('/{id}/edit', [ProductController::class, 'edit'])->name('product.edit');
+        Route::post('/store', [ProductController::class, 'store'])->name('product.store');
+        Route::put('/{id}/update', [ProductController::class, 'update'])->name('product.update');
+        Route::delete('/destroy', [ProductController::class, 'destroy'])->name('product.destroy');
+        Route::post('/status-update', [ProductController::class, 'statusUpdate'])->name('product.status');
     });
 
     Route::get('/about', [AboutController::class, 'index'])->name('about.index');

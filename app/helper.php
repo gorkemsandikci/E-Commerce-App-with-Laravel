@@ -15,12 +15,12 @@ if (!function_exists('delete_file')) {
 }
 
 if (!function_exists('image_upload')) {
-    function image_upload($image, $image_name, $destination_path): string
+    function image_upload($image, $image_name, $destination_path, $id): string
     {
         $original_filename = $image->getClientOriginalName();
         $original_filename_arr = explode('.', $original_filename);
         $file_ext = end($original_filename_arr);
-        $image_name = date('d-m-Y') . '-' . Str::slug($image_name);
+        $image_name = date('d-m-Y') . '-' . Str::slug($image_name) . '-' . $id;
 
         if(!file_exists($destination_path)) {
             mkdir($destination_path, 0777, true);

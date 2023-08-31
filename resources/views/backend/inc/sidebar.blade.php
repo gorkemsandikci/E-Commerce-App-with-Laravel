@@ -22,6 +22,20 @@
         </li>
 
         <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#product-nav-item" aria-expanded="false" aria-controls="product-nav-item">
+                <i class="icon-layout menu-icon"></i>
+                <span class="menu-title">Ürünler</span>
+                <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="product-nav-item">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('panel.product.index') }}">Listele</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('panel.product.create') }}">Oluştur</a></li>
+                </ul>
+            </div>
+        </li>
+
+        <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#category-nav-item" aria-expanded="false" aria-controls="category-nav-item">
                 <i class="icon-layout menu-icon"></i>
                 <span class="menu-title">Kategori</span>
