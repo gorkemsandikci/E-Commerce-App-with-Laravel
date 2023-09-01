@@ -23,7 +23,7 @@ class AboutController extends Controller
             $image = $request->file('image');
             $image_name = $request->name;
             $destination_path = 'img/about';
-            $image_url = image_upload($image, $image_name, $destination_path);
+            $image_url = image_upload($image, $image_name, $destination_path, $id);
         }
 
         About::updateOrCreate(

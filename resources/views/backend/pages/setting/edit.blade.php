@@ -47,34 +47,6 @@
                             @method('PUT')
                         @endif
 
-                        <select name="set_type" class="form-control" id="setTypeSelect">
-                            <option value="">Tür Seçiniz</option>
-                            <option
-                                value="ckeditor" {{ isset($setting->set_type) && $setting->set_type == 'ckeditor' ? 'selected' : '' }}>
-                                CKEditor
-                            </option>
-                            <option
-                                value="textarea" {{ isset($setting->set_type) && $setting->set_type == 'textarea' ? 'selected' : '' }}>
-                                TextArea
-                            </option>
-                            <option
-                                value="file" {{ isset($setting->set_type) && $setting->set_type == 'file' ? 'selected' : '' }}>
-                                Dosya
-                            </option>
-                            <option
-                                value="image" {{ isset($setting->set_type) && $setting->set_type == 'image' ? 'selected' : '' }}>
-                                Resim
-                            </option>
-                            <option
-                                value="text" {{ isset($setting->set_type) && $setting->set_type == 'text' ? 'selected' : '' }}>
-                                Yazı
-                            </option>
-                            <option
-                                value="email" {{ isset($setting->set_type) && $setting->set_type == 'email' ? 'selected' : '' }}>
-                                E-Posta
-                            </option>
-                        </select>
-
                         @if (isset($setting->set_type) && $setting->set_type === 'image')
                             <div class="form-group">
                                 <div class="input-group col-xs-12">
@@ -84,14 +56,46 @@
                         @endif
 
                         <div class="form-group">
-                            <label for="name">Key</label>
+                            <label for="set_type">Tür Seçiniz:</label>
+                            <select name="set_type" class="form-control" id="setTypeSelect">
+                                <option value="">Tür Seçiniz</option>
+                                <option
+                                    value="ckeditor" {{ isset($setting->set_type) && $setting->set_type == 'ckeditor' ? 'selected' : '' }}>
+                                    CKEditor
+                                </option>
+                                <option
+                                    value="textarea" {{ isset($setting->set_type) && $setting->set_type == 'textarea' ? 'selected' : '' }}>
+                                    TextArea
+                                </option>
+                                <option
+                                    value="file" {{ isset($setting->set_type) && $setting->set_type == 'file' ? 'selected' : '' }}>
+                                    Dosya
+                                </option>
+                                <option
+                                    value="image" {{ isset($setting->set_type) && $setting->set_type == 'image' ? 'selected' : '' }}>
+                                    Resim
+                                </option>
+                                <option
+                                    value="text" {{ isset($setting->set_type) && $setting->set_type == 'text' ? 'selected' : '' }}>
+                                    Yazı
+                                </option>
+                                <option
+                                    value="email" {{ isset($setting->set_type) && $setting->set_type == 'email' ? 'selected' : '' }}>
+                                    E-Posta
+                                </option>
+                            </select>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="name">Key:</label>
                             <input type="text" class="form-control" id="name" name="name"
                                    value="{{ $setting->name ?? '' }}"
                                    placeholder="Key">
                         </div>
 
                         <div class="form-group">
-                            <label for="data">Value</label>
+                            <label for="data">Value:</label>
 
                             <div class="inputContent">
 
@@ -175,12 +179,12 @@
 
         @if(isset($setting->data) && $setting->set_type == 'ckeditor')
             defaultText = "{!! isset($setting->data) ? $setting->data : '' !!}";
-            ckeditor(defaultText);
+        ckeditor(defaultText);
         @endif
 
         @if(isset($setting->data) && $setting->set_type == 'textarea')
-            console.log('textarea');
-            createInput('textarea');
+        console.log('textarea');
+        createInput('textarea');
         @endif
 
         function createInput(type) {

@@ -37,7 +37,7 @@ class ProductController extends Controller
             $image = $request->file('image');
             $image_name = $request->name;
             $destination_path = 'img/products';
-            $image_url = image_upload($image, $image_name, $destination_path);
+            $image_url = image_upload($image, $image_name, $destination_path, rand(99,9999));
         }
 
         Product::create([
