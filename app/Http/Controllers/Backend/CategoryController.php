@@ -36,7 +36,7 @@ class CategoryController extends Controller
             $image = $request->file('image');
             $image_name = $request->name;
             $destination_path = 'img/categories';
-            $image_url = image_upload($image, $image_name, $destination_path);
+            $image_url = image_upload($image, $image_name, $destination_path, rand(99,9999));
         }
 
         Category::create([
@@ -82,14 +82,14 @@ class CategoryController extends Controller
             $image = $request->file('image');
             $image_name = $request->name;
             $destination_path = 'img/categories';
-            $image_url = image_upload($image, $image_name, $destination_path);
+            $image_url = image_upload($image, $image_name, $destination_path, $category->id);
         }
 
         $category->update([
             'name' => $request->name,
             'content' => $request->description,
             'cat_ust' => $request->cat_ust,
-            'image' => $image_url ?? null,
+            'image' => $image_url ?? $category->image,
             'status' => $request->status,
         ]);
 

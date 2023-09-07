@@ -101,11 +101,11 @@ class ProductController extends Controller
             'size' => $request->size,
             'price' => $request->price,
             'short_text' => $request->short_text,
-            'image' => $image_url,
+            'image' => $image_url == $product->image,
             'status' => $request->status,
         ]);
 
-        return back()->withSuccess('Kategori güncellendi!');
+        return back()->withSuccess('Ürün güncellendi!');
     }
 
     /**

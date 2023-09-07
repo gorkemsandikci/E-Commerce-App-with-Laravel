@@ -35,7 +35,7 @@ class SliderController extends Controller
             $image = $request->file('image');
             $image_name = $request->name;
             $destination_path = 'img/slider';
-            $image_url = image_upload($image, $image_name, $destination_path);
+            $image_url = image_upload($image, $image_name, $destination_path, rand(99,9999));
         }
 
         Slider::create([
@@ -79,12 +79,12 @@ class SliderController extends Controller
             $image = $request->file('image');
             $image_name = $request->name;
             $destination_path = 'img/slider';
-            $image_url = image_upload($image, $image_name, $destination_path);
+            $image_url = image_upload($image, $image_name, $destination_path, $slider->id);
         }
 
         $slider->update([
             'name' => $request->name,
-            'image' => $image_url,
+            'image' => $image_url ?? $slider->image,
             'link' => $request->link,
             'content' => $request->description,
             'status' => $request->status,

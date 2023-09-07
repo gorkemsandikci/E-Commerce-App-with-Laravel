@@ -16,20 +16,19 @@ class AboutController extends Controller
 
     public function update(Request $request, $id = 1)
     {
-        $about = About::where('id', $id)->firstOrFail();
-        $image_url = $about->image;
-
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $image_name = $request->name;
             $destination_path = 'img/about';
-            $image_url = image_upload($image, $image_name, $destination_path, $id);
+            $image_url = image_upload($image, $image_name, $destination_path, rand(999,99999));
         }
+
+        $about = About::where('id', $id)->first();
 
         About::updateOrCreate(
             ['id' => $id],
             [
-                'image' => $image_url ?? null,
+                'image' => $image_url ?? $about->image,
                 'name' => $request->name,
                 'content' => $request->content,
                 'text_1_icon' => $request->text_1_icon,

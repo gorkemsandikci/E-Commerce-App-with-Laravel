@@ -53,25 +53,23 @@ class SettingController extends Controller
     {
         $setting = SiteSetting::where('id', $id)->first();
 
-        $key = $request->name;
-
-        $image_url = null;
-
-        if($setting->set_type == 'image' || $setting->set_type == 'file') {
-            $image_url = $setting->data;
-        }
-
         if ($request->hasFile('data')) {
             delete_file($setting->data);
             $image = $request->file('data');
-            $image_name = $key;
+            $image_name = $request->name;
             $destination_path = 'img/setting';
-            $image_url = image_upload($image, $image_name, $destination_path, $setting->id);
+            $image_url = image_upload($image, $image_name, $destination_path, rand(999,99999));
+        }
+
+        if($setting->set_type == 'image' || $setting->set_type == 'file') {
+            $data_item = $image_url ?? $setting->data;
+        } else {
+            $data_item = $request->data ?? $setting->data;
         }
 
         $setting->update([
-            'name' => $key,
-            'data' => $image_url ?? $request->data,
+            'name' => $request->name,
+            'data' => $data_item,
             'set_type' => $request->set_type
         ]);
 
