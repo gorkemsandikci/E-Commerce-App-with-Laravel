@@ -144,18 +144,29 @@
 @section('customjs')
     <script>
         $(document).on('click', '.paymentBtn', function (e) {
+            var url = "{{ route('sepet.form') }}";
 
+            @if (!empty(session()->get('cart')))
+                window.location.href = url;
+            @endif
+
+        });
+
+        $(document).on('click', '.increaseBtn', function (e) {
+            $('.orderItem').removeClass('selected');
+            $(this).closest('.orderItem').addClass('selected');
+            sepetUpdate();
         });
 
         $(document).on('click', '.decreaseBtn', function (e) {
             $('.orderItem').removeClass('selected');
             $(this).closest('.orderItem').addClass('selected');
-            var product_id = $('.selected').closest('.orderItem').attr('data-id');
-            var qty = $('.selected').closest('.orderItem').find('.qtyItem').val();
-            sepetUpdate(product_id, qty, 'Azalt')
+            sepetUpdate()
         });
 
-        function sepetUpdate(product_id, qty, itemevent) {
+        function sepetUpdate() {
+            var product_id = $('.selected').closest('.orderItem').attr('data-id');
+            var qty = $('.selected').closest('.orderItem').find('.qtyItem').val();
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
@@ -164,26 +175,16 @@
                 url: "{{ route('sepet.new-qty') }}",
                 data: {
                     product_id: product_id,
-                    qty: qty,
-                    itemevent: itemevent
+                    qty: qty
                 },
                 success: function (response) {
-                    $('.selected').find('.itemTotal').text(response.itemTotal+' ₺');
-                    if(qty == 0) {
+                    $('.selected').find('.itemTotal').text(response.itemTotal + ' ₺');
+                    if (qty == 0) {
                         $('.selected').remove();
                     }
-                    console.log(response);
                 }
             });
         }
-
-        $(document).on('click', '.increaseBtn', function (e) {
-            $('.orderItem').removeClass('selected');
-            $(this).closest('.orderItem').addClass('selected');
-            var product_id = $('.selected').closest('.orderItem').attr('data-id');
-            var qty = $('.selected').closest('.orderItem').find('.qtyItem').val();
-            sepetUpdate(product_id, qty, 'Arttir');
-        });
 
     </script>
 @endsection

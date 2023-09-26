@@ -5,3 +5,8 @@
 - nginx-conf oluşturuldu
 - veritabanı oluşturuldu
 - php artisan key:generate çalıştırıldı
+
+ run: php artisan make:model Order -m
+ update migration
+ create $fillable in Order.php
+ run: php artisan migrate

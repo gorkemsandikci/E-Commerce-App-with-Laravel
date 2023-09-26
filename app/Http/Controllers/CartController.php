@@ -12,6 +12,29 @@ class CartController extends Controller
     {
         $cart_item = session('cart', []);
         $total_price = 0;
+        foreach ($cart_item as $cart) {
+            $total_price += $cart['price'] * $cart['qty'];
+        }
+
+        if (session()->get('coupon_code')) {
+            $coupon = Coupon::where('name', session()->get('coupon_code'))->where('status', '1')->first();
+            $coupon_price = $coupon->price ?? 0;
+            $coupon_code = $coupon->name ?? '';
+
+            $total_price = $total_price - $coupon_price;
+
+        } else {
+            $coupon = null;
+        }
+
+        session()->put('total_price', $total_price);
+        return view('frontend.pages.cart', compact('cart_item', 'total_price'));
+    }
+
+    public function sepetForm()
+    {
+        $cart_item = session('cart', []);
+        $total_price = 0;
         foreach ($cart_item as $item) {
             $total_price += $item['price'] * $item['qty'];
         }
@@ -28,8 +51,7 @@ class CartController extends Controller
         }
 
         session()->put('total_price', $total_price);
-
-        return view('frontend.pages.cart', compact('cart_item', 'total_price'));
+        return view('frontend.pages.cartform', compact('cart_item', 'total_price'));
     }
 
     public function add(Request $request)
@@ -64,7 +86,6 @@ class CartController extends Controller
     {
         $product_id = $request->product_id;
         $qty = $request->qty ?? 1;
-        $size = $request->size;
         $product = Product::find($product_id);
 
         if (!$product) {
@@ -125,6 +146,10 @@ class CartController extends Controller
         session()->put('coupon_code', $coupon_code);
 
         return back()->withSuccess('Kupon uygulandı!');
+    }
 
+    public function cartSave(Request $request)
+    {
+        return $request->all();
     }
 }
