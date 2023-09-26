@@ -44,7 +44,6 @@
                 <li class="has-children">
                     <a href="#">KATEGORİ</a>
                     <ul class="dropdown">
-
                         @if (!empty ($categories) && $categories->count() > 0)
                             @foreach ($categories->where('cat_ust', null) as $category)
                                 <li class="has-children">
@@ -59,7 +58,6 @@
                                 </li>
                             @endforeach
                         @endif
-
                     </ul>
                 </li>
                 <li></li>

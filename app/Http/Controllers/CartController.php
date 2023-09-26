@@ -57,6 +57,10 @@ class CartController extends Controller
         }
         session(['cart' => $cart_item]);
 
+        if($request->ajax()) {
+            return response()->json(['Sepet Güncellendi']);
+        }
+
         return back()->withSuccess('Ürün Sepete Eklendi!');
 
     }

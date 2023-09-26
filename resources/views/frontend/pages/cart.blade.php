@@ -41,7 +41,7 @@
 
                             @if ($cart_item)
                                 @foreach($cart_item as $key => $item)
-                                    <tr>
+                                    <tr class="orderItem" data-id="{{ $key }}">
                                         <td class="product-thumbnail">
                                             <img src="{{ asset($item['image']) }}" alt="Image" class="img-fluid">
                                         </td>
@@ -52,17 +52,19 @@
                                         <td>
                                             <div class="input-group mb-3" style="max-width: 120px;">
                                                 <div class="input-group-prepend">
-                                                    <button class="btn btn-outline-primary js-btn-minus" type="button">
+                                                    <button class="btn btn-outline-primary js-btn-minus decreaseBtn"
+                                                            type="button">
                                                         &minus;
                                                     </button>
                                                 </div>
-                                                <input type="text" class="form-control text-center"
+                                                <input type="text" class="form-control text-center qtyItem"
                                                        value="{{ $item['qty'] }}"
                                                        placeholder=""
                                                        aria-label="Example text with button addon"
                                                        aria-describedby="button-addon1">
                                                 <div class="input-group-append">
-                                                    <button class="btn btn-outline-primary js-btn-plus" type="button">
+                                                    <button class="btn btn-outline-primary js-btn-plus increaseBtn"
+                                                            type="button">
                                                         &plus;
                                                     </button>
                                                 </div>
@@ -126,8 +128,7 @@
 
                             <div class="row">
                                 <div class="col-md-12">
-                                    <button class="btn btn-primary btn-lg py-3 btn-block"
-                                            onclick="window.location='checkout.html'">Ödemeye Geç
+                                    <button class="btn btn-primary btn-lg py-3 btn-block paymentBtn">Ödemeye Geç
                                     </button>
                                 </div>
                             </div>
@@ -138,4 +139,46 @@
         </div>
     </div>
 
+@endsection
+
+@section('customjs')
+    <script>
+        $(document).on('click', '.paymentBtn', function (e) {
+
+        });
+
+        $(document).on('click', '.decreaseBtn', function (e) {
+            $('.orderItem').removeClass('selected');
+            $(this).closest('.orderItem').addClass('.selected');
+            sepetUpdate();
+        });
+
+        function sepetUpdate() {
+            var product_id = $('.selected').closest('.orderItem').attr('data-id');
+            var qty = $('.selected').closest('.orderItem').find('.qtyItem').val();
+            console.log(product_id);
+            console.log(qty);
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                },
+                type: "POST",
+                url: "{{ route('sepet.ekle') }}",
+                data: {
+                    product_id:product_id,
+                    qty:qty,
+                },
+                success: function (response) {
+                    console.log(response);
+                }
+            });
+        }
+
+        $(document).on('click', '.increaseBtn', function (e) {
+            $('.orderItem').removeClass('selected');
+            $(this).closest('.orderItem').addClass('.selected');
+            sepetUpdate();
+        });
+
+    </script>
 @endsection
