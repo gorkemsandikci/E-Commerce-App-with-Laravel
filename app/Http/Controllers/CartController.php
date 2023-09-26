@@ -35,7 +35,7 @@ class CartController extends Controller
     public function add(Request $request)
     {
         $product_id = $request->productId;
-        $qty = $request->qty;
+        $qty = $request->qty ?? 1;
         $size = $request->size;
         $product = Product::find($product_id);
 
@@ -57,12 +57,36 @@ class CartController extends Controller
         }
         session(['cart' => $cart_item]);
 
-        if($request->ajax()) {
-            return response()->json(['Sepet Güncellendi']);
-        }
-
         return back()->withSuccess('Ürün Sepete Eklendi!');
+    }
 
+    public function newQty(Request $request)
+    {
+        $product_id = $request->product_id;
+        $qty = $request->qty ?? 1;
+        $size = $request->size;
+        $product = Product::find($product_id);
+
+        if (!$product) {
+            return response()->json('Ürün Bulunamadı');
+        }
+        $cart_item = session('cart', []);
+
+        if (array_key_exists($product_id, $cart_item)) {
+            $cart_item[$product_id]['qty'] = $qty;
+            if ($qty == 0 || $qty < 0) {
+                unset($cart_item[$product_id]);
+            }
+            $item_total = $product->price * $qty;
+        }
+        session(['cart' => $cart_item]);
+
+        if ($request->ajax()) {
+            return response()->json([
+                'itemTotal' => $item_total ?? 0,
+                'message' => 'Sepet Güncellendi'
+            ]);
+        }
     }
 
     public function remove(Request $request)

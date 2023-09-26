@@ -71,7 +71,7 @@
                                             </div>
 
                                         </td>
-                                        <td>{{ $item['price'] * $item['qty'] }} ₺</td>
+                                        <td class="itemTotal">{{ $item['price'] * $item['qty'] }} ₺</td>
                                         <td>
                                             <form action="{{ route('sepet.cikar') }}" method="POST">
                                                 @csrf
@@ -149,26 +149,29 @@
 
         $(document).on('click', '.decreaseBtn', function (e) {
             $('.orderItem').removeClass('selected');
-            $(this).closest('.orderItem').addClass('.selected');
-            sepetUpdate();
-        });
-
-        function sepetUpdate() {
+            $(this).closest('.orderItem').addClass('selected');
             var product_id = $('.selected').closest('.orderItem').attr('data-id');
             var qty = $('.selected').closest('.orderItem').find('.qtyItem').val();
-            console.log(product_id);
-            console.log(qty);
+            sepetUpdate(product_id, qty, 'Azalt')
+        });
+
+        function sepetUpdate(product_id, qty, itemevent) {
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
                 },
                 type: "POST",
-                url: "{{ route('sepet.ekle') }}",
+                url: "{{ route('sepet.new-qty') }}",
                 data: {
-                    product_id:product_id,
-                    qty:qty,
+                    product_id: product_id,
+                    qty: qty,
+                    itemevent: itemevent
                 },
                 success: function (response) {
+                    $('.selected').find('.itemTotal').text(response.itemTotal+' ₺');
+                    if(qty == 0) {
+                        $('.selected').remove();
+                    }
                     console.log(response);
                 }
             });
@@ -176,8 +179,10 @@
 
         $(document).on('click', '.increaseBtn', function (e) {
             $('.orderItem').removeClass('selected');
-            $(this).closest('.orderItem').addClass('.selected');
-            sepetUpdate();
+            $(this).closest('.orderItem').addClass('selected');
+            var product_id = $('.selected').closest('.orderItem').attr('data-id');
+            var qty = $('.selected').closest('.orderItem').find('.qtyItem').val();
+            sepetUpdate(product_id, qty, 'Arttir');
         });
 
     </script>
