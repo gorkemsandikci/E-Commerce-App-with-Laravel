@@ -3,6 +3,19 @@
 use Illuminate\Support\Str;
 use ImageResize;
 
+
+if (!function_exists('generateOTP')) {
+    function generateOTP($n)
+    {
+        $generator = "1357902468";
+        $result = '';
+        for ($i = 1; $i < $n; $i++) {
+            $result .= substr($generator, (rand() % (strlen($generator))), 1);
+        }
+        return $result;
+    }
+}
+
 if (!function_exists('delete_file')) {
     function delete_file($string): void
     {
@@ -22,7 +35,7 @@ if (!function_exists('image_upload')) {
         $file_ext = end($original_filename_arr);
         $image_name = date('d-m-Y') . '-' . Str::slug($image_name) . '-' . $id;
 
-        if(!file_exists($destination_path)) {
+        if (!file_exists($destination_path)) {
             mkdir($destination_path, 0777, true);
         }
 
@@ -39,8 +52,9 @@ if (!function_exists('image_upload')) {
     }
 }
 
-if(!function_exists('strLimit')) {
-    function strLimit($text, $limit, $url = null) {
+if (!function_exists('strLimit')) {
+    function strLimit($text, $limit, $url = null)
+    {
         if ($url == null) {
             $end = '...';
         } else {
