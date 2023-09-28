@@ -40,15 +40,15 @@
                             <tbody>
 
                             @if ($cart_item)
-                                @foreach($cart_item as $key => $item)
+                                @foreach($cart_item as $key => $cart)
                                     <tr class="orderItem" data-id="{{ $key }}">
                                         <td class="product-thumbnail">
-                                            <img src="{{ asset($item['image']) }}" alt="Image" class="img-fluid">
+                                            <img src="{{ asset($cart['image']) }}" alt="Image" class="img-fluid">
                                         </td>
                                         <td class="product-name">
-                                            <h2 class="h5 text-black">{{ $item['name'] ?? '' }}</h2>
+                                            <h2 class="h5 text-black">{{ $cart['name'] ?? '' }}</h2>
                                         </td>
-                                        <td>{{ $item['price'] }} ₺</td>
+                                        <td>{{ $cart['price'] }} ₺</td>
                                         <td>
                                             <div class="input-group mb-3" style="max-width: 120px;">
                                                 <div class="input-group-prepend">
@@ -58,7 +58,7 @@
                                                     </button>
                                                 </div>
                                                 <input type="text" class="form-control text-center qtyItem"
-                                                       value="{{ $item['qty'] }}"
+                                                       value="{{ $cart['qty'] }}"
                                                        placeholder=""
                                                        aria-label="Example text with button addon"
                                                        aria-describedby="button-addon1">
@@ -69,9 +69,16 @@
                                                     </button>
                                                 </div>
                                             </div>
-
                                         </td>
-                                        <td class="itemTotal">{{ $item['price'] * $item['qty'] }} ₺</td>
+                                        @php
+                                            $kdv_percent = $cart['kdv'] ?? 0;
+                                            $price = $cart['price'];
+                                            $count = $cart['qty'];
+
+                                            $kdv_price = ($price * $count) * ($kdv_percent / 100);
+                                            $total_price = ($price * $count) + $kdv_price;
+                                        @endphp
+                                        <td class="itemTotal">{{ $total_price }} ₺</td>
                                         <td>
                                             <form action="{{ route('sepet.cikar') }}" method="POST">
                                                 @csrf
@@ -122,7 +129,7 @@
                                     <span class="text-black">Toplam</span>
                                 </div>
                                 <div class="col-md-6 text-right">
-                                    <strong class="text-black">{{ session()->get('total_price') ?? '' }}</strong>
+                                    <strong class="text-black newTotalPrice" >{{ session()->get('total_price') }}</strong>
                                 </div>
                             </div>
 
@@ -182,6 +189,7 @@
                     if (qty == 0) {
                         $('.selected').remove();
                     }
+                    $('.newTotalPrice').text(response.totalPrice);
                 }
             });
         }

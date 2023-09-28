@@ -1,5 +1,13 @@
 @extends('frontend.layout.layout')
 
+@section('customcss')
+    <style>
+        .categories {
+            display: -webkit-flex;
+        }
+    </style>
+@endsection
+
 @section('content')
 
     <div class="site-blocks-cover" style="background-image: url({{ asset($slider->image ?? '') }});" data-aos="fade">
@@ -57,7 +65,7 @@
             <div class="row">
                 @if (!empty ($categories) && $categories->count() > 0)
                     @foreach ($categories->where('cat_ust', null) as $category)
-                        <div class="col-sm-6 col-md-6 col-lg-4 mb-4 mb-lg-0" data-aos="fade" data-aos-delay="">
+                        <div class="col-sm-6 col-md-6 col-lg-4 mb-4 mb-lg-0 categories" data-aos="fade" data-aos-delay="">
                             <a class="block-2-item" href="{{ url($category->slug) }}">
                                 <figure class="image">
                                     <img src="{{ asset($category->image) }}" alt="" class="img-fluid">

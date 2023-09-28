@@ -19,6 +19,7 @@
 
     <link rel="stylesheet" href="{{ asset('/') }}css/style.css">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    @yield('customcss')
 
 </head>
 <body>

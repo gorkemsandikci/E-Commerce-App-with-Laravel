@@ -21,6 +21,7 @@ class Product extends Model
         'size',
         'color',
         'qty',
+        'kdv',
     ];
 
     public function category()

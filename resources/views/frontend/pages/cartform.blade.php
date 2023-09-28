@@ -99,7 +99,7 @@
                                 <div class="p-3 p-lg-5 border">
                                     <label for="c_code" class="text-black mb-3">Kupon Kodu</label>
                                     <div class="input-group w-75">
-                                        <input type="text" class="form-control" id="c_code" value="{{ session()->get('coupon_code') ?? '' }}" placeholder="Kupon Kodu"
+                                        <input type="text" class="form-control" readonly id="c_code" value="{{ session()->get('coupon_code') ?? '' }}" placeholder="Kupon Kodu"
                                                aria-label="Coupon Code" aria-describedby="button-addon2">
                                     </div>
                                 </div>
@@ -117,14 +117,20 @@
                                         <tbody>
                                         @if (session()->get('cart'))
                                             @foreach(session()->get('cart') as $key => $cart)
+
                                                 @php
-                                                    $total_price += $cart['price'] * $cart['qty'];
+                                                    $kdv_percent = $cart['kdv'] ?? 0;
+                                                    $price = $cart['price'];
+                                                    $count = $cart['qty'];
+
+                                                    $kdv_price = ($price * $count) * ($kdv_percent / 100);
+                                                    $total_price = ($price * $count) + $kdv_price;
                                                 @endphp
+
                                                 <tr>
                                                     <td>{{$cart['name']}} </td>
-                                                    <td>{{$cart['price']}} ₺ <strong
-                                                            class="mx-2">x</strong> {{$cart['qty']}} <strong
-                                                            class="mx-2">=</strong> {{$cart['price']*$cart['qty']}} ₺
+                                                    <td>{{$cart['price']}} ₺ <strong class="mx-2">x</strong> {{$cart['qty']}}
+                                                        <strong class="mx-2">=</strong> {{$total_price}} ₺
                                                     </td>
                                                 </tr>
                                             @endforeach

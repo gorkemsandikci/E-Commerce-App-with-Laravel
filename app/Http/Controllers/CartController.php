@@ -7,6 +7,7 @@ use App\Models\Invoice;
 use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class CartController extends Controller
 {
@@ -14,6 +15,32 @@ class CartController extends Controller
     {
         $cart_item = session('cart', []);
         $total_price = 0;
+        $new_total_price = 0;
+
+        foreach ($cart_item as $cart) {
+            $kdv_percent = $cart['kdv'] ?? 0;
+            $kdv_price = ($cart['price'] * $cart['qty']) * ($kdv_percent / 100);
+            $total_price = ($cart['price'] * $cart['qty']) + $kdv_price;
+            $new_total_price += $total_price;
+        }
+
+        Log::debug($new_total_price);
+
+        if (session()->get('coupon_code')) {
+            $coupon = Coupon::where('name', session()->get('coupon_code'))->where('status', '1')->first();
+            $coupon_price = $coupon->price ?? 0;
+            $new_total_price = $new_total_price - $coupon_price;
+        }
+
+        session()->put('total_price', $new_total_price);
+        return view('frontend.pages.cart', compact('cart_item'));
+    }
+
+    public function sepetForm()
+    {
+        $cart_item = session('cart', []);
+        $total_price = 0;
+
         foreach ($cart_item as $cart) {
             $total_price += $cart['price'] * $cart['qty'];
         }
@@ -22,38 +49,13 @@ class CartController extends Controller
             $coupon = Coupon::where('name', session()->get('coupon_code'))->where('status', '1')->first();
             $coupon_price = $coupon->price ?? 0;
             $coupon_code = $coupon->name ?? '';
-
             $total_price = $total_price - $coupon_price;
-
         } else {
-            $coupon = null;
+            $new_total_price = $total_price;
         }
 
-        session()->put('total_price', $total_price);
-        return view('frontend.pages.cart', compact('cart_item', 'total_price'));
-    }
-
-    public function sepetForm()
-    {
-        $cart_item = session('cart', []);
-        $total_price = 0;
-        foreach ($cart_item as $item) {
-            $total_price += $item['price'] * $item['qty'];
-        }
-
-        if (session()->get('coupon_code')) {
-            $coupon = Coupon::where('name', session()->get('coupon_code'))->where('status', '1')->first();
-            $coupon_price = $coupon->price ?? 0;
-            $coupon_code = $coupon->name ?? '';
-
-            $total_price = $total_price - $coupon_price;
-
-        } else {
-            $coupon = null;
-        }
-
-        session()->put('total_price', $total_price);
-        return view('frontend.pages.cartform', compact('cart_item', 'total_price'));
+        session()->put('total_price', $new_total_price);
+        return view('frontend.pages.cartform', compact('cart_item'));
     }
 
     public function add(Request $request)
@@ -76,6 +78,7 @@ class CartController extends Controller
                 'image' => $product->image,
                 'price' => $product->price,
                 'qty' => $qty,
+                'kdv' => $product->kdv,
                 'size' => $size
             ];
         }
@@ -88,8 +91,8 @@ class CartController extends Controller
     {
         $product_id = $request->product_id;
         $qty = $request->qty ?? 1;
+        $item_total = 0;
         $product = Product::find($product_id);
-
         if (!$product) {
             return response()->json('Ürün Bulunamadı');
         }
@@ -100,13 +103,35 @@ class CartController extends Controller
             if ($qty == 0 || $qty < 0) {
                 unset($cart_item[$product_id]);
             }
-            $item_total = $product->price * $qty;
+            $kdv_percent_item = $product->kdv ?? 0;
+            $kdv_price_item = ($product->price * $qty) * ($kdv_percent_item / 100);
+            $item_total = ($product->price * $qty) + $kdv_price_item;
         }
         session(['cart' => $cart_item]);
+
+        $cart_item = session()->get('cart');
+        $last_total_price = 0;
+        foreach ($cart_item as $cart) {
+            $kdv_percent = $cart['kdv'] ?? 0;
+            $kdv_price = ($cart['price'] * $cart['qty']) * ($kdv_percent / 100);
+            $total_price = ($cart['price'] * $cart['qty']) + $kdv_price;
+            $last_total_price += $total_price;
+        }
+
+        if (session()->get('coupon_code')) {
+            $coupon = Coupon::where('name', session()->get('coupon_code'))->where('status', '1')->first();
+            $coupon_price = $coupon->price ?? 0;
+            $new_total_price = $last_total_price - $coupon_price;
+        } else {
+            $new_total_price = $last_total_price;
+        }
+
+        session()->put('total_price', $new_total_price);
 
         if ($request->ajax()) {
             return response()->json([
                 'itemTotal' => $item_total ?? 0,
+                'totalPrice' => session()->get('total_price'),
                 'message' => 'Sepet Güncellendi'
             ]);
         }
@@ -151,7 +176,8 @@ class CartController extends Controller
         return back()->withSuccess('Kupon uygulandı!');
     }
 
-    function generateCode() {
+    function generateCode()
+    {
         $order_no = generateOTP(7);
         if ($this->barcodeCodeExists($order_no)) {
             return $this->generateCode();
@@ -159,7 +185,8 @@ class CartController extends Controller
         return $order_no;
     }
 
-    function barcodeCodeExists($order_no) {
+    function barcodeCodeExists($order_no)
+    {
         return Invoice::where('order_no', $order_no)->exists();
     }
 

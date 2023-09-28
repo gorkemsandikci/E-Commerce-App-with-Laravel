@@ -1,8 +1,6 @@
 <?php
 
 use Illuminate\Support\Str;
-use ImageResize;
-
 
 if (!function_exists('generateOTP')) {
     function generateOTP($n)
