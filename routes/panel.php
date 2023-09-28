@@ -4,6 +4,7 @@ use App\Http\Controllers\Backend\AboutController;
 use App\Http\Controllers\Backend\CategoryController;
 use App\Http\Controllers\Backend\ContactController;
 use App\Http\Controllers\Backend\DashboardController;
+use App\Http\Controllers\Backend\OrderController;
 use App\Http\Controllers\Backend\ProductController;
 use App\Http\Controllers\Backend\SettingController;
 use App\Http\Controllers\Backend\SliderController;
@@ -52,13 +53,20 @@ Route::group(['middleware' => ['panelsetting', 'auth'], 'prefix' => 'panel', 'as
     Route::get('/about', [AboutController::class, 'index'])->name('about.index');
     Route::post('/about/update', [AboutController::class, 'update'])->name('about.update');
 
-
     Route::group(['prefix' => 'contact'], function () {
         Route::get('/', [ContactController::class, 'index'])->name('contact.index');
         Route::get('/{id}/edit', [ContactController::class, 'edit'])->name('contact.edit');
         Route::put('/{id}/update', [ContactController::class, 'update'])->name('contact.update');
         Route::delete('/destroy', [ContactController::class, 'destroy'])->name('contact.destroy');
         Route::post('/status-update', [ContactController::class, 'statusUpdate'])->name('contact.status');
+    });
+
+    Route::group(['prefix' => 'order'], function () {
+        Route::get('/', [OrderController::class, 'index'])->name('order.index');
+        Route::get('/{id}/edit', [OrderController::class, 'edit'])->name('order.edit');
+        Route::put('/{id}/update', [OrderController::class, 'update'])->name('order.update');
+        Route::delete('/destroy', [OrderController::class, 'destroy'])->name('order.destroy');
+        Route::post('/status-update', [OrderController::class, 'statusUpdate'])->name('order.status');
     });
 
     Route::group(['prefix' => 'setting'], function () {

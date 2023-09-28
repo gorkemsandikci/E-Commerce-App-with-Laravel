@@ -99,7 +99,9 @@
                                 <div class="p-3 p-lg-5 border">
                                     <label for="c_code" class="text-black mb-3">Kupon Kodu</label>
                                     <div class="input-group w-75">
-                                        <input type="text" class="form-control" readonly id="c_code" value="{{ session()->get('coupon_code') ?? '' }}" placeholder="Kupon Kodu"
+                                        <input type="text" class="form-control" readonly id="c_code"
+                                               value="{{ session()->get('coupon_code') ?? '' }}"
+                                               placeholder="Kupon Kodu"
                                                aria-label="Coupon Code" aria-describedby="button-addon2">
                                     </div>
                                 </div>
@@ -128,22 +130,22 @@
                                                 @endphp
 
                                                 <tr>
-                                                    <td>{{$cart['name']}} </td>
-                                                    <td>{{$cart['price']}} ₺ <strong class="mx-2">x</strong> {{$cart['qty']}}
-                                                        <strong class="mx-2">=</strong> {{$total_price}} ₺
-                                                    </td>
+                                                    <td>{{$cart['name']}} ({{$cart['qty']}})</td>
+                                                    <td>{{$total_price}} ₺</td>
                                                 </tr>
                                             @endforeach
                                         @endif
 
                                         <tr>
                                             <td class="text-black font-weight-bold"><strong>İndirim Tutarı</strong></td>
-                                            <td class="text-black font-weight-bold"><strong>{{session()->get('coupon_price') ?? 0}} ₺</strong>
+                                            <td class="text-black font-weight-bold">
+                                                <strong>{{session()->get('coupon_price') ?? 0}} ₺</strong>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td class="text-black font-weight-bold"><strong>Genel Toplam</strong></td>
-                                            <td class="text-black font-weight-bold"><strong>{{session()->get('total_price') ?? 0}} ₺</strong>
+                                            <td class="text-black font-weight-bold">
+                                                <strong>{{session()->get('total_price') ?? 0}} ₺</strong>
                                             </td>
                                         </tr>
                                         </tbody>

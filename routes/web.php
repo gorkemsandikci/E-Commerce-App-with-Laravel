@@ -43,7 +43,7 @@ Route::group(['middleware' => 'sitesetting'], function () {
         Route::get('/', [CartController::class, 'index'])->name('sepet');
         Route::post('/couponcheck', [CartController::class, 'couponcheck'])->name('coupon.check');
         Route::group(['prefix' => 'form'], function () {
-            Route::get('/', [CartController::class, 'sepetForm'])->name('sepet.form');
+            Route::get('/', [CartController::class, 'cartForm'])->name('sepet.form');
         });
         Route::post('/save', [CartController::class, 'cartSave'])->name('sepet.cart-save');
     });

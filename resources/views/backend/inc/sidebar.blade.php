@@ -22,6 +22,19 @@
         </li>
 
         <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#order-nav-item" aria-expanded="false" aria-controls="order-nav-item">
+                <i class="icon-layout menu-icon"></i>
+                <span class="menu-title">Siparişler</span>
+                <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="order-nav-item">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('panel.order.index') }}">Listele</a></li>
+                </ul>
+            </div>
+        </li>
+
+        <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#product-nav-item" aria-expanded="false" aria-controls="product-nav-item">
                 <i class="icon-layout menu-icon"></i>
                 <span class="menu-title">Ürünler</span>

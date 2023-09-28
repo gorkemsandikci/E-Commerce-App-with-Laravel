@@ -7,14 +7,26 @@ use App\Models\Invoice;
 use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 class CartController extends Controller
 {
     public function index()
     {
-        $cart_item = session('cart', []);
-        $total_price = 0;
+        $cart_item = $this->orderList();
+
+        return view('frontend.pages.cart', compact('cart_item'));
+    }
+
+    public function cartForm()
+    {
+        $cart_item = $this->orderList();
+
+        return view('frontend.pages.cartform', compact('cart_item'));
+    }
+
+    public function orderList()
+    {
+        $cart_item = session()->get('cart') ?? [];
         $new_total_price = 0;
 
         foreach ($cart_item as $cart) {
@@ -24,38 +36,20 @@ class CartController extends Controller
             $new_total_price += $total_price;
         }
 
-        Log::debug($new_total_price);
-
-        if (session()->get('coupon_code')) {
+        if (session()->get('coupon_code') && $new_total_price != 0) {
             $coupon = Coupon::where('name', session()->get('coupon_code'))->where('status', '1')->first();
             $coupon_price = $coupon->price ?? 0;
             $new_total_price = $new_total_price - $coupon_price;
         }
 
         session()->put('total_price', $new_total_price);
-        return view('frontend.pages.cart', compact('cart_item'));
-    }
 
-    public function sepetForm()
-    {
-        $cart_item = session('cart', []);
-        $total_price = 0;
-
-        foreach ($cart_item as $cart) {
-            $total_price += $cart['price'] * $cart['qty'];
+        if(count(session()->get('cart')) == 0) {
+            session()->forget('coupon_code');
+            session()->forget('total_price');
         }
 
-        if (session()->get('coupon_code')) {
-            $coupon = Coupon::where('name', session()->get('coupon_code'))->where('status', '1')->first();
-            $coupon_price = $coupon->price ?? 0;
-            $coupon_code = $coupon->name ?? '';
-            $total_price = $total_price - $coupon_price;
-        } else {
-            $new_total_price = $total_price;
-        }
-
-        session()->put('total_price', $new_total_price);
-        return view('frontend.pages.cartform', compact('cart_item'));
+        return $cart_item;
     }
 
     public function add(Request $request)
@@ -96,6 +90,7 @@ class CartController extends Controller
         if (!$product) {
             return response()->json('Ürün Bulunamadı');
         }
+
         $cart_item = session('cart', []);
 
         if (array_key_exists($product_id, $cart_item)) {
@@ -109,24 +104,7 @@ class CartController extends Controller
         }
         session(['cart' => $cart_item]);
 
-        $cart_item = session()->get('cart');
-        $last_total_price = 0;
-        foreach ($cart_item as $cart) {
-            $kdv_percent = $cart['kdv'] ?? 0;
-            $kdv_price = ($cart['price'] * $cart['qty']) * ($kdv_percent / 100);
-            $total_price = ($cart['price'] * $cart['qty']) + $kdv_price;
-            $last_total_price += $total_price;
-        }
-
-        if (session()->get('coupon_code')) {
-            $coupon = Coupon::where('name', session()->get('coupon_code'))->where('status', '1')->first();
-            $coupon_price = $coupon->price ?? 0;
-            $new_total_price = $last_total_price - $coupon_price;
-        } else {
-            $new_total_price = $last_total_price;
-        }
-
-        session()->put('total_price', $new_total_price);
+        $this->orderList();
 
         if ($request->ajax()) {
             return response()->json([
@@ -145,33 +123,31 @@ class CartController extends Controller
         if (array_key_exists($product_id, $cart_item)) {
             unset($cart_item[$product_id]);
         }
-
         session(['cart' => $cart_item]);
+
+        if(count(session()->get('cart')) == 0) {
+            session()->forget('coupon_code');
+        }
+
         return back()->withSuccess('Ürün sepetten çıkartıldı!');
     }
 
     public function couponcheck(Request $request)
     {
-        $cart_item = session('cart', []);
-        $total_price = 0;
 
-        foreach ($cart_item as $item) {
-            $total_price += $item['price'] * $item['qty'];
-        }
         $coupon = Coupon::where('name', $request->coupon_name)->where('status', '1')->first();
 
         if (empty($coupon)) {
             return back()->withError('Kupon bulunamadı!');
         }
 
-        $coupon_price = $coupon->price ?? 0;
         $coupon_code = $coupon->name ?? '';
-
-        $total_price = $total_price - $coupon_price;
-
-        session()->put('total_price', $total_price);
         session()->put('coupon_code', $coupon_code);
+
+        $coupon_price = $coupon->price ?? 0;
         session()->put('coupon_price', $coupon_price);
+
+        $this->orderList();
 
         return back()->withSuccess('Kupon uygulandı!');
     }
@@ -234,14 +210,14 @@ class CartController extends Controller
         ]);
 
         $cart = session()->get('cart') ?? [];
-
         foreach ($cart as $key => $item) {
             Order::create([
-                "order_no" => $invoice->order_no,
-                "product_id" => $key,
-                "name" => $item['name'],
-                "qty" => $item['qty'],
-                "price" => $item['price']
+                'order_no' => $invoice->order_no,
+                'product_id' => $key,
+                'name' => $item['name'],
+                'qty' => $item['qty'],
+                'kdv' => $item['kdv'],
+                'price' => $item['price']
             ]);
         }
         session()->forget('cart');

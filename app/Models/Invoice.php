@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Invoice extends Model
@@ -18,6 +17,12 @@ class Invoice extends Model
         'zip_code',
         'email',
         'phone',
-        'note'
+        'note',
+        'status'
     ];
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class, 'order_no','order_no');
+    }
 }
