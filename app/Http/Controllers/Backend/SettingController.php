@@ -24,8 +24,9 @@ class SettingController extends Controller
         $key = $request->name;
 
         $image_url = null;
+
         if ($request->hasFile('data')) {
-            $image = $request->file('image');
+            $image = $request->file('data');
             $image_name = $request->name;
             $destination_path = 'img/setting';
             $image_url = image_upload($image, $image_name, $destination_path, rand(999,99999));

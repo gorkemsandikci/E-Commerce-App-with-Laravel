@@ -18,8 +18,8 @@ class OrderController extends Controller
 
     public function edit(string $id)
     {
-        $order = Invoice::where('id', $id)->first();
-        return view('backend.pages.order.edit', compact('order'));
+        $invoice = Invoice::where('id', $id)->with('orders')->first();
+        return view('backend.pages.order.edit', compact('invoice'));
     }
 
     public function update(Request $request, string $id)

@@ -19,8 +19,7 @@ class PanelSettingMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $settings = SiteSetting::
-        pluck('data', 'name')->toArray();
+        $settings = SiteSetting::pluck('data', 'name')->toArray();
 
         view()->share(['settings' => $settings]);
 

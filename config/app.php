@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\ServiceProvider;
 
@@ -184,7 +185,8 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'Example' => App\Facades\Example::class,
-        'ImageResize' => Intervention\Image\Facades\Image::class
+        'ImageResize' => Intervention\Image\Facades\Image::class,
+        'Carbon' => Carbon::class
     ])->toArray(),
 
 ];

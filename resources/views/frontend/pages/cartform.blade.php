@@ -119,7 +119,6 @@
                                         <tbody>
                                         @if (session()->get('cart'))
                                             @foreach(session()->get('cart') as $key => $cart)
-
                                                 @php
                                                     $kdv_percent = $cart['kdv'] ?? 0;
                                                     $price = $cart['price'];
@@ -128,14 +127,12 @@
                                                     $kdv_price = ($price * $count) * ($kdv_percent / 100);
                                                     $total_price = ($price * $count) + $kdv_price;
                                                 @endphp
-
                                                 <tr>
                                                     <td>{{$cart['name']}} ({{$cart['qty']}})</td>
                                                     <td>{{$total_price}} ₺</td>
                                                 </tr>
                                             @endforeach
                                         @endif
-
                                         <tr>
                                             <td class="text-black font-weight-bold"><strong>İndirim Tutarı</strong></td>
                                             <td class="text-black font-weight-bold">

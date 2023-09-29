@@ -9,7 +9,6 @@
 @endsection
 
 @section('content')
-
     <div class="row">
         <div class="col-12 grid-margin stretch-card">
             <div class="card">
@@ -86,7 +85,6 @@
                             </select>
                         </div>
 
-
                         <div class="form-group">
                             <label for="name">Key:</label>
                             <input type="text" class="form-control" id="name" name="name"
@@ -96,16 +94,14 @@
 
                         <div class="form-group">
                             <label for="data">Value:</label>
-
                             <div class="inputContent">
-
                                 @if(isset($setting->set_type) && $setting->set_type === 'ckeditor')
                                     <textarea class="form-control" id="editor" name="data"
                                               rows="3">{!! $setting->data == '' !!}</textarea>
                                 @elseif(isset($setting->set_type) && $setting->set_type === 'textarea')
                                     <textarea class="form-control" id="data" name="data"
                                               rows="3">{!! $setting->data == '' !!}</textarea>
-                                @elseif (isset($setting->set_type) && $setting->set_type === 'image' || isset($setting->set_type) && $setting->set_type === 'file')
+                                @elseif(isset($setting->set_type) && $setting->set_type === 'image' || isset($setting->set_type) && $setting->set_type === 'file')
                                     <input class="form-control" type="file" name="data">
                                 @elseif(isset($setting->set_type) && $setting->set_type === 'text')
                                     <input class="form-control" type="text" name="data" placeholder="Yazınız"
@@ -118,21 +114,9 @@
                             </div>
                         </div>
 
-
-                        {{--                        <div class="form-group">--}}
-                        {{--                            <label>Görsel Yükle</label>--}}
-                        {{--                            <input type="file" name="image" class="file-upload-default">--}}
-                        {{--                            <div class="input-group col-xs-12">--}}
-                        {{--                                <input type="text" class="form-control file-upload-info" disabled--}}
-                        {{--                                       placeholder="Görsel Yükle">--}}
-                        {{--                                <span class="input-group-append">--}}
-                        {{--                          <button class="file-upload-browse btn btn-primary" type="button">Yükle</button>--}}
-                        {{--                        </span>--}}
-                        {{--                            </div>--}}
-                        {{--                        </div>--}}
-
                         <button type="submit" class="btn btn-primary mr-2">Kaydet</button>
                         <button class="btn btn-light">İptal</button>
+
                     </form>
                 </div>
             </div>
