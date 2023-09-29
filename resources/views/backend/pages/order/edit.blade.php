@@ -214,7 +214,7 @@
                                         <td>{{ $item['qty'] }}</td>
                                         <td>{{ $item['kdv'] }}</td>
                                         <td>{{ $item['price'] }} ₺</td>
-                                        <td>{{ $total_price }}</td>
+                                        <td>{{ $total_price }} ₺</td>
                                         @php
                                             $all_total += $total_price;
                                         @endphp
@@ -231,7 +231,7 @@
                         </table>
 
                         <div class="footer">
-                            <h2 class="font-weight-400"><h2/>
+                            <h2 class="font-weight-400"></h2>
                         </div>
                     </div>
                 </div>

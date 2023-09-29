@@ -221,6 +221,6 @@ class CartController extends Controller
             ]);
         }
         session()->forget('cart');
-        return redirect()->route('anasayfa');
+        return redirect()->route('anasayfa')->withSuccess('Alışveriş başarıyla tamamlandı!');
     }
 }

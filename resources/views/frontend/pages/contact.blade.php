@@ -79,7 +79,7 @@
                 <div class="col-md-5 ml-auto">
                     <div class="p-4 border mb-3">
                         <span class="d-block text-primary h6 text-uppercase">Adres</span>
-                        <p class="mb-0">{{ $settings['address'] }}</p>
+                        <p class="mb-0">{!! $settings['address'] !!}</p>
                     </div>
                     <div class="p-4 border mb-3">
                         <span class="d-block text-primary h6 text-uppercase">Telefon</span>
