@@ -54,7 +54,7 @@ class CartController extends Controller
 
     public function add(Request $request)
     {
-        $product_id = $request->productId;
+        $product_id = special_decrypt($request->productId);
         $qty = $request->qty ?? 1;
         $size = $request->size;
         $product = Product::find($product_id);

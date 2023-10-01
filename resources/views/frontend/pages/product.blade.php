@@ -31,7 +31,7 @@
                     <p><strong class="text-primary h4">₺{{ number_format($product->price, 2) }}</strong></p>
                     <form action="{{ route('sepet.ekle' )}}" method="POST">
                         @csrf
-                        <input type="hidden" name="productId" value="{{$product->id}}">
+                        <input type="hidden" name="productId" value="{{ special_encrypt($product->id) }}">
                         <div class="mb-1 d-flex">
                             <label for="option-xsm" class="d-flex mr-3 mb-3">
                             <span class="d-inline-block mr-2" style="top:-2px; position: relative;"><input type="radio"

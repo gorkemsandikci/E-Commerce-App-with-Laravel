@@ -61,3 +61,18 @@ if (!function_exists('strLimit')) {
         return Str::limit($text, $limit, $end);
     }
 }
+
+if (!function_exists('special_encrypt')) {
+    function special_encrypt($string)
+    {
+        return encrypt($string);
+    }
+}
+
+if (!function_exists('special_decrypt')) {
+    function special_decrypt($string)
+    {
+        return decrypt($string);
+    }
+}
+

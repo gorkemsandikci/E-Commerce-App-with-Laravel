@@ -17,7 +17,7 @@
                         ₺{{ number_format($product->price, 2) }}</p>
                     <form action="{{ route('sepet.ekle' )}}" method="POST">
                         @csrf
-                        <input type="hidden" name="productId" value="{{$product->id}}">
+                        <input type="hidden" name="productId" value="{{ special_encrypt($product->id) }}">
                         <input type="hidden" name="qty" value="1">
                         <input type="hidden" name="size" value="{{$product->size}}">
                         @if($product->qty = 0 || $product->qty == null)
