@@ -15,14 +15,14 @@
                     <p class="mb-0">{{ $product->short_text }}</p>
                     <p class="text-primary font-weight-bold">
                         ₺{{ number_format($product->price, 2) }}</p>
-                    <form action="{{ route('sepet.ekle' )}}" method="POST">
+                    <form method="POST" id="addForm">
                         @csrf
                         <input type="hidden" name="productId" value="{{ special_encrypt($product->id) }}">
                         <input type="hidden" name="qty" value="1">
                         <input type="hidden" name="size" value="{{$product->size}}">
                         @if($product->qty = 0 || $product->qty == null)
                             <button type="submit" href="{{ route('sepet.ekle' )}}"
-                                    class="buy-now btn btn-sm" disabled>Tükendİ
+                                    class="buy-now btn btn-sm" disabled>Tükendi
                             </button>
                         @else
                             <button type="submit" href="{{ route('sepet.ekle' )}}"

@@ -124,6 +124,13 @@
                         </div>
 
                         <div class="form-group">
+                            <label for="kdv">KDV</label>
+                            <input type="text" class="form-control" id="kdv" name="kdv"
+                                   value="{{ $product->kdv ?? '' }}"
+                                   placeholder="KDV">
+                        </div>
+
+                        <div class="form-group">
                             <label for="aciklama">Açıklama</label>
                             <textarea class="form-control" id="editor" name="description" placeholder="Açıklama"
                                       rows="3">{!! $product->content ?? '' !!}

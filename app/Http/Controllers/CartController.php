@@ -78,7 +78,11 @@ class CartController extends Controller
         }
         session(['cart' => $cart_item]);
 
-        return back()->withSuccess('Ürün Sepete Eklendi!');
+        if($request->ajax()){
+            return response()->json(['message' => 'Ürün Sepete Eklendi.']);
+        }
+
+        return back()->withSuccess('Ürün Sepete Eklendi.');
     }
 
     public function newQty(Request $request)

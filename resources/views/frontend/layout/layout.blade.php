@@ -39,16 +39,16 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script>
     @if(session()->get('success'))
-    toastr.success("{{session()->get("success")}}")
+    toastr.success("{{session()->get("success")}}");
     @endif
 
     @if(session()->get('error'))
-    toastr.error("{{session()->get("error")}}")
+    toastr.error("{{session()->get("error")}}");
     @endif
 
     @if(count($errors))
     @foreach($errors->all() as $error)
-    toastr.error("{{ $error }}")
+    toastr.error("{{ $error }}");
     @endforeach
     @endif
 </script>
