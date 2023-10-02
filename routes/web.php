@@ -39,7 +39,7 @@ Route::group(['middleware' => 'sitesetting'], function () {
     Route::group(['prefix' => 'sepet'], function () {
         Route::post('/ekle', [CartController::class, 'add'])->name('sepet.ekle');
         Route::post('/new-qty', [CartController::class, 'newQty'])->name('sepet.new-qty');
-        Route::post('/cikar', [CartController::class, 'remove'])->name('sepet.cikar');
+        Route::post('/cikar', [CartController::class, 'remove'])->name('sepet.remove');
         Route::get('/', [CartController::class, 'index'])->name('sepet');
         Route::post('/couponcheck', [CartController::class, 'couponcheck'])->name('coupon.check');
         Route::group(['prefix' => 'form'], function () {

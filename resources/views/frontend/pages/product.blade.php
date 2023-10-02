@@ -90,7 +90,15 @@
 
                         </div>
                         <p>
-                            <button type="submit" class="buy-now btn btn-sm btn-primary">Sepete Ekle</button>
+                            @if($product->qty = 0 || $product->qty == null)
+                                <button type="submit"
+                                        class="buy-now btn btn-sm" disabled>Tükendi
+                                </button>
+                            @else
+                                <button type="submit" href="{{ route('sepet.ekle' )}}"
+                                        class="buy-now btn btn-sm btn-primary">Sepete Ekle
+                                </button>
+                            @endif
                         </p>
                     </form>
 

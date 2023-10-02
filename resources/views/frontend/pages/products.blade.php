@@ -84,7 +84,6 @@
                             <div id="slider-range" class="border-primary"></div>
                             <input type="text" name="text" id="amount" class="form-control border-0 pl-0 bg-white"
                                    disabled=""/>
-
                             <input type="text" name="text" id="priceBetween" class="form-control" hidden=""/>
                         </div>
 
@@ -193,8 +192,6 @@
 
             newUrl = url.href;
             window.history.pushState({}, '', newUrl);
-            // location.reload();
-
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
@@ -223,7 +220,6 @@
             filtrele();
 
         });
-
 
         $(document).on('submit', '#addForm', function (e) {
             e.preventDefault();

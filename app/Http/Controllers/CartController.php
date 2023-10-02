@@ -44,7 +44,7 @@ class CartController extends Controller
 
         session()->put('total_price', $new_total_price);
 
-        if(count(session()->get('cart')) == 0) {
+        if (count(session()->get('cart')) == 0) {
             session()->forget('coupon_code');
             session()->forget('total_price');
         }
@@ -78,8 +78,8 @@ class CartController extends Controller
         }
         session(['cart' => $cart_item]);
 
-        if($request->ajax()){
-            return response()->json(['message' => 'Ürün Sepete Eklendi.']);
+        if ($request->ajax()) {
+            return response()->json(['sepetCount' => count(session()->get('cart')), 'message' => 'Ürün Sepete Eklendi.']);
         }
 
         return back()->withSuccess('Ürün Sepete Eklendi.');
@@ -121,7 +121,7 @@ class CartController extends Controller
 
     public function remove(Request $request)
     {
-        $product_id = $request->product_id;
+        $product_id = special_decrypt($request->product_id);
         $cart_item = session('cart', []);
 
         if (array_key_exists($product_id, $cart_item)) {
@@ -129,8 +129,12 @@ class CartController extends Controller
         }
         session(['cart' => $cart_item]);
 
-        if(count(session()->get('cart')) == 0) {
+        if (count(session()->get('cart')) == 0) {
             session()->forget('coupon_code');
+        }
+
+        if ($request->ajax()) {
+            return response()->json(['sepetCount' => count(session()->get('cart')), 'message' => 'Ürün Sepetten Çıkartıldı.']);
         }
 
         return back()->withSuccess('Ürün sepetten çıkartıldı!');

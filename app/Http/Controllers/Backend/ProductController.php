@@ -7,6 +7,7 @@ use App\Http\Requests\ProductRequest;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
 {
@@ -103,7 +104,7 @@ class ProductController extends Controller
             'kdv' => $request->kdv,
             'price' => $request->price,
             'short_text' => $request->short_text,
-            'image' => $image_url == $product->image,
+            'image' => $image_url ?? $product->image,
             'status' => $request->status,
         ]);
 

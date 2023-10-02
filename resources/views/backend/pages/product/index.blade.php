@@ -22,7 +22,6 @@
                                 <th>Görsel</th>
                                 <th>Başlık</th>
                                 <th>Açıklama</th>
-                                <th>Link</th>
                                 <th>Durum</th>
                                 <th>Düzenle</th>
                             </tr>
@@ -36,8 +35,7 @@
                                         </td>
                                         <td>{{ $item->name }}</td>
 
-                                        <td>{{ $item->product->name ?? '' }}</td>
-                                        <td>{{ $item->content }}</td>
+                                        <td>{{ $item->short_text ?? '' }}</td>
                                         <td>
                                             <div class="checkbox">
                                                 <label>

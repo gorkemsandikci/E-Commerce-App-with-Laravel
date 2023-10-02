@@ -80,9 +80,10 @@
                                         @endphp
                                         <td class="itemTotal">{{ $total_price }} ₺</td>
                                         <td>
-                                            <form action="{{ route('sepet.cikar') }}" method="POST">
+                                            <form class="removeItem" method="POST">
                                                 @csrf
-                                                <input type="hidden" name="product_id" value="{{ $key }}">
+                                                <input type="hidden" name="product_id"
+                                                       value="{{ special_encrypt($key) }}">
                                                 <button type="submit" class="btn btn-primary btn-sm">X</button>
                                             </form>
                                         </td>
@@ -129,7 +130,8 @@
                                     <span class="text-black">Toplam</span>
                                 </div>
                                 <div class="col-md-6 text-right">
-                                    <strong class="text-black newTotalPrice" >{{ session()->get('total_price') }}</strong>
+                                    <strong
+                                        class="text-black newTotalPrice">{{ session()->get('total_price') }}</strong>
                                 </div>
                             </div>
 
@@ -193,6 +195,25 @@
                 }
             });
         }
+
+        $(document).on('click', '.removeItem', function (e) {
+            e.preventDefault();
+            const formData = $(this).serialize();
+            var item = $(this);
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                },
+                type: "POST",
+                url: "{{ route('sepet.remove') }}",
+                data: formData,
+                success: function (response) {
+                    toastr.success(response.message);
+                    $('.count').text(response.sepetCount);
+                    item.closest('.orderItem').remove();
+                }
+            });
+        });
 
     </script>
 @endsection

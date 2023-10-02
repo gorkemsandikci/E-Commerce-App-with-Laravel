@@ -21,7 +21,7 @@
                         <input type="hidden" name="qty" value="1">
                         <input type="hidden" name="size" value="{{$product->size}}">
                         @if($product->qty = 0 || $product->qty == null)
-                            <button type="submit" href="{{ route('sepet.ekle' )}}"
+                            <button type="submit"
                                     class="buy-now btn btn-sm" disabled>Tükendi
                             </button>
                         @else
