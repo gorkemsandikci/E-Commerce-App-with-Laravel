@@ -23,10 +23,7 @@ Route::group(['middleware' => 'sitesetting'], function () {
 
     Route::get('/', [HomePageController::class, 'index'])->name('anasayfa');
 
-    Route::get('/urunler', [PageController::class, 'urunler'])->name('urunler');
-    Route::get('/kadin/{slug?}', [PageController::class, 'urunler'])->name('kadinurunler');
-    Route::get('/erkek/{slug?}', [PageController::class, 'urunler'])->name('erkekurunler');
-    Route::get('/cocuk/{slug?}', [PageController::class, 'urunler'])->name('cocukurunler');
+    Route::get('/urunler/{slug?}', [PageController::class, 'urunler'])->name('urunler');
     Route::get('/indirimdekiler', [PageController::class, 'indirimdekiurunler'])->name('indirimdekiurunler');
 
     Route::get('/urun/{slug}', [PageController::class, 'urundetay'])->name('urundetay');
@@ -51,5 +48,4 @@ Route::group(['middleware' => 'sitesetting'], function () {
     Auth::routes();
 
     Route::get('/cikis', [AjaxController::class, 'logout'])->name('cikis');
-
 });

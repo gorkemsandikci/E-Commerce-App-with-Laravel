@@ -2,14 +2,7 @@
 
 @section('content')
 
-    <div class="bg-light py-3">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12 mb-0"><a href="index.html">Home</a> <span class="mx-2 mb-0">/</span> <strong
-                        class="text-black">Shop</strong></div>
-            </div>
-        </div>
-    </div>
+    @include('frontend.inc.breadcrumb')
 
     <div class="site-section">
         <div class="container">
@@ -69,7 +62,7 @@
                             {{--                       route($category->slug.'urunler',$subCategory->slug) --}}
                             @if(!empty($categories) && count($categories) > 0 )
                                 @foreach($categories->where('cat_ust',null) as $category)
-                                    <li class="mb-1"><a href="{{ route($category->slug.'urunler')  }}"
+                                    <li class="mb-1"><a href="{{ route('urunler',$category->slug)  }}"
                                                         class="d-flex"><span>{{ $category->name }}</span> <span
                                                 class="text-black ml-auto">( {{ $category->getTotalProductCount() }} )</span></a>
                                     </li>
@@ -136,7 +129,7 @@
                                 @foreach($categories->where('cat_ust',null) as $category)
                                     <div class="col-sm-6 col-md-6 col-lg-4 mb-4 mb-lg-0" data-aos="fade"
                                          data-aos-delay="">
-                                        <a class="block-2-item" href="{{ route($category->slug. 'urunler') }}">
+                                        <a class="block-2-item" href="{{ route('urunler', $category->slug) }}">
                                             <figure class="image">
                                                 <img src="{{ $category->image }}" alt="{{ $category->slug }}"
                                                      class="img-fluid">

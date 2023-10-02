@@ -12,16 +12,28 @@ class CartController extends Controller
 {
     public function index()
     {
+        $breadcrumb = [
+            'sayfalar' => [
+            ],
+            'active' => 'Sepet'
+        ];
+
         $cart_item = $this->orderList();
 
-        return view('frontend.pages.cart', compact('cart_item'));
+        return view('frontend.pages.cart', compact('breadcrumb','cart_item'));
     }
 
     public function cartForm()
     {
+        $breadcrumb = [
+            'sayfalar' => [
+            ],
+            'active' => 'Sipariş'
+        ];
+
         $cart_item = $this->orderList();
 
-        return view('frontend.pages.cartform', compact('cart_item'));
+        return view('frontend.pages.cartform', compact('breadcrumb','cart_item'));
     }
 
     public function orderList()

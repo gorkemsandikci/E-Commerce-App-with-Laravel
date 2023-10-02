@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\About;
+use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
@@ -11,6 +12,7 @@ class PageController extends Controller
 {
     public function urunler(Request $request, string $slug = null)
     {
+
         $category = $request->segment(1) ?? null;
 
         $sizes = !empty($request->size) ? explode(',', $request->size) : null;
@@ -22,6 +24,39 @@ class PageController extends Controller
 
         $order_by = $request->order_by ?? 'id';
         $sort = $request->sort ?? 'desc';
+
+        $main_category = null;
+        $sub_category = null;
+
+        if (!empty($category) && empty($slug)) {
+            $main_category = Category::where('slug', $category)->first();
+        } else if (!empty($category) && !empty($slug)) {
+            $sub_category = Category::where('slug', $slug)->first();
+            if (empty($sub_category->cat_ust)) {
+                $main_category = Category::where('slug', $slug)->first();
+                $sub_category = null;
+            } else {
+                $main_category = Category::where('id', $sub_category->cat_ust)->first();
+            }
+        }
+
+        $breadcrumb = [
+            'sayfalar' => [
+            ],
+            'active' => 'Ürünler'
+        ];
+
+        if (!empty($main_category) && empty($sub_category)) {
+            $breadcrumb['active'] = $main_category->name;
+        }
+
+        if (!empty($sub_category)) {
+            $breadcrumb['sayfalar'][] = [
+                'link' => route('urunler', $main_category->slug),
+                'name' => $main_category->name
+            ];
+            $breadcrumb['active'] = $sub_category->name;
+        }
 
         $products = Product::where('status', '1')
             ->select([
@@ -46,11 +81,11 @@ class PageController extends Controller
                     $query->where('slug', $slug);
                 }
                 return $query;
-            })->orderBy($order_by, $sort)->paginate(21);;
+            })->orderBy($order_by, $sort)->paginate(21);
 
         if ($request->ajax()) {
             $data = view('frontend.ajax.productList', compact('products'))->render();
-            return response(['data' => $data, 'paginate' => (string) $products->withQueryString()->links('pagination::custom')]);
+            return response(['data' => $data, 'paginate' => (string)$products->withQueryString()->links('pagination::custom')]);
         }
 
         $sizelists = Product::where('status', '1')->groupBy('size')->pluck('size')->toArray();
@@ -59,12 +94,18 @@ class PageController extends Controller
 
         $maxprice = Product::max('price');
 
-        return view('frontend.pages.products', compact('products', 'maxprice', 'sizelists', 'colors'));
+        return view('frontend.pages.products', compact('breadcrumb', 'products', 'maxprice', 'sizelists', 'colors'));
     }
 
     public function indirimdekiurunler()
     {
-        return view('frontend.pages.products');
+        $breadcrumb = [
+            'sayfalar' => [
+            ],
+            'active' => 'İndirimdeki Ürünler'
+        ];
+
+        return view('frontend.pages.products', compact('breadcrumb'));
     }
 
     public function urundetay($slug)
@@ -80,17 +121,47 @@ class PageController extends Controller
             ->orderBy('id', 'desc')
             ->get();
 
-        return view('frontend.pages.product', compact('product', 'products'));
+        $category = Category::where('id', $product->category_id)->first();
+
+        $breadcrumb = [
+            'sayfalar' => [
+            ],
+            'active' => $product->name
+        ];
+
+
+        if (!empty($category)) {
+            $breadcrumb['sayfalar'][] = [
+                'link' => route('urunler', $category->slug),
+                'name' => $category->name
+            ];
+        }
+
+
+        return view('frontend.pages.product', compact('breadcrumb', 'product', 'products'));
     }
 
     public function hakkimizda()
     {
         $about = About::where('id', 1)->first();
-        return view('frontend.pages.about', compact('about'));
+
+        $breadcrumb = [
+            'sayfalar' => [
+            ],
+            'active' => 'Hakkımızda'
+        ];
+
+        return view('frontend.pages.about', compact('breadcrumb','about'));
     }
 
     public function iletisim()
     {
-        return view('frontend.pages.contact');
+        $breadcrumb = [
+            'sayfalar' => [
+            ],
+            'active' => 'İletişim'
+        ];
+
+        return view('frontend.pages.contact', compact('breadcrumb'));
     }
 }

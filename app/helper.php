@@ -69,10 +69,13 @@ if (!function_exists('special_encrypt')) {
     }
 }
 
-if (!function_exists('special_decrypt')) {
-    function special_decrypt($string)
+if (!function_exists('special_path')) {
+    function special_path($language = null, $url = null)
     {
-        return decrypt($string);
+        $lang_link = ($language && $language !== 'en') ? $language . '.' : (env('APP_ENV') === 'local' ? '' : 'www.');
+        $url_link = ($url) ? '/' . $url : '';
+
+        return config('app.app_ssl') . $lang_link . config('app.url') . $url_link;
     }
 }
 
