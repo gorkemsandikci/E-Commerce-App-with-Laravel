@@ -69,6 +69,13 @@ if (!function_exists('special_encrypt')) {
     }
 }
 
+if (!function_exists('special_decrypt')) {
+    function special_decrypt($string)
+    {
+        return decrypt($string);
+    }
+}
+
 if (!function_exists('special_path')) {
     function special_path($language = null, $url = null)
     {
