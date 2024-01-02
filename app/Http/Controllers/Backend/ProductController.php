@@ -127,10 +127,12 @@ class ProductController extends Controller
 
     public function statusUpdate(Request $request)
     {
+        sleep(2);
         $update = $request->state;
         $update_check = $update == "false" ? '0' : '1';
 
         Product::where('id', $request->id)->update(['status' => $update_check]);
         return response(['error' => false, 'status' => $update]);
     }
+
 }

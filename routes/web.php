@@ -5,7 +5,10 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CustomAuthController;
 use App\Http\Controllers\Frontend\HomePageController;
 use App\Http\Controllers\Frontend\PageController;
+use App\Jobs\PulseJob;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -46,6 +49,30 @@ Route::group(['middleware' => 'sitesetting'], function () {
     });
 
     Auth::routes();
+
+    Route::get('/fakelogins', function () {
+        $users = User::all();
+        $base_url = config('app.url');
+
+        foreach ($users as $user) {
+            Http::get("{$base_url}/fakelogin/{$user->id}");
+        }
+
+        return 'Request complete!';
+    });
+
+    Route::get('/fakelogin/{user}', function (User $user) {
+        $base_url = config('app.url');
+        auth()->login($user);
+
+        Http::get("{$base_url}/dashboard");
+
+        auth()->logout();
+    });
+
+    Route::middleware('auth', 'verified')->get('/job', function() {
+        PulseJob::dispatch();
+    });
 
     Route::get('/cikis', [AjaxController::class, 'logout'])->name('cikis');
 });
