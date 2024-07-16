@@ -145,7 +145,7 @@
 
                 <div class="page">
                     <div class="subpage">
-                        <div class="header center"><img class="header-img" src="{{ asset($settings['logo']) }}"/>
+                        <div class="header center"><img class="header-img" src=""/>
                             <h2 class="font-weight-400">{{ $invoice->name ?? '' }}</h2>
                         </div>
 
